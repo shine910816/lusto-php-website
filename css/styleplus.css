@@ -62,7 +62,7 @@
   margin:30px auto 0;
 }
 .disp_table thead tr {
-  background-color:#000;
+  background-color:#333;
   border-top:1px solid #CCC;
 }
 .disp_table thead tr th {

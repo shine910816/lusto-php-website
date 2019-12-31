@@ -18,6 +18,7 @@ class Config
         $result["user"]["change_password"] = SYSTEM_AUTH_LOGIN;
         $result["admin"]["admin_list"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["admin_create"] = SYSTEM_AUTH_ADMIN;
+        $result["admin"]["package_list"] = SYSTEM_AUTH_ADMIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -33,6 +34,7 @@ class Config
         $result["user"]["change_password"] = array('<a href="./?menu=user&act=disp" data-ajax="false">个人设定</a>', "修改密码");
         $result["admin"]["admin_list"] = array("成员管理");
         $result["admin"]["admin_create"] = array('<a href="./?menu=admin&act=admin_list" data-ajax="false">成员管理</a>', "创建用户");
+        $result["admin"]["package_list"] = array("套餐管理");
         return $result;
     }
 

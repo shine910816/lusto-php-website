@@ -39,4 +39,5 @@
     <a class="ui-shadow ui-btn ui-corner-all" href="./?menu=admin&act=admin_create" data-ajax="false">创建用户</a>
   </div>
 </div>
+<a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 {^include file=$comfooter_file^}

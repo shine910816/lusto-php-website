@@ -35,6 +35,6 @@
     <p>还没有已创建的套餐</p>
 {^/if^}
   </div>
+  <a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 </div>
-<a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 {^include file=$comfooter_file^}

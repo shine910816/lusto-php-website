@@ -16,25 +16,11 @@ class LustoAdmin_PackageListAction extends ActionBase
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
-        //if ($request->hasParameter("do_reset")) {
-        //    $ret = $this->_doResetExecute($controller, $user, $request);
-        //    if ($controller->isError($ret)) {
-        //        $ret->setPos(__FILE__, __LINE__);
-        //        return $ret;
-        //    }
-        //} elseif ($request->hasParameter("do_activity")) {
-        //    $ret = $this->_doActivityExecute($controller, $user, $request);
-        //    if ($controller->isError($ret)) {
-        //        $ret->setPos(__FILE__, __LINE__);
-        //        return $ret;
-        //    }
-        //} else {
-            $ret = $this->_doDefaultExecute($controller, $user, $request);
-            if ($controller->isError($ret)) {
-                $ret->setPos(__FILE__, __LINE__);
-                return $ret;
-            }
-        //}
+        $ret = $this->_doDefaultExecute($controller, $user, $request);
+        if ($controller->isError($ret)) {
+            $ret->setPos(__FILE__, __LINE__);
+            return $ret;
+        }
         return $ret;
     }
 

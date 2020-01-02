@@ -17,5 +17,5 @@
   </div>
 </div>
 <h1></h1>
-<button class="ui-btn ui-icon-carat-l ui-btn-icon-left" onclick="javascript:history.back()">返回</button>
+<button class="ui-shadow ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-left" onclick="javascript:history.back()">返回</button>
 {^include file=$comfooter_file^}

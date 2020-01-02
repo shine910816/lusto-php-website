@@ -36,8 +36,8 @@
 {^else^}
     <p>还没有已创建的用户</p>
 {^/if^}
-    <a class="ui-shadow ui-btn ui-corner-all" href="./?menu=admin&act=admin_create" data-ajax="false">创建用户</a>
+    <a class="ui-shadow ui-btn ui-corner-all ui-btn-b" href="./?menu=admin&act=admin_create" data-ajax="false">创建用户</a>
   </div>
+  <a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 </div>
-<a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 {^include file=$comfooter_file^}

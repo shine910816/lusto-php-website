@@ -1,17 +1,17 @@
 <?php
 
 /**
- * ²ñ&#21592;´ÉÍý²èÌÌ
+ * ä¼šå‘˜ç®¡ç†ç”»é¢
  * @author Kinsama
  * @version 2020-01-02
  */
 class LustoCustom_SearchAction extends ActionBase
 {
     /**
-     * &#25191;¹Ô¼çÄø½ø
-     * @param object $controller Controller&#23545;¾Ý&#31867;
-     * @param object $user User&#23545;¾Ý&#31867;
-     * @param object $request Request&#23545;¾Ý&#31867;
+     * æ‰§è¡Œä¸»ç¨‹åº
+     * @param object $controller Controllerå¯¹è±¡ç±»
+     * @param object $user Userå¯¹è±¡ç±»
+     * @param object $request Requestå¯¹è±¡ç±»
      */
     public function doMainExecute(Controller $controller, User $user, Request $request)
     {
@@ -32,10 +32,10 @@ class LustoCustom_SearchAction extends ActionBase
     }
 
     /**
-     * &#25191;¹Ô»²¿ô&#26816;&#27979;
-     * @param object $controller Controller&#23545;¾Ý&#31867;
-     * @param object $user User&#23545;¾Ý&#31867;
-     * @param object $request Request&#23545;¾Ý&#31867;
+     * æ‰§è¡Œå‚æ•°æ£€æµ‹
+     * @param object $controller Controllerå¯¹è±¡ç±»
+     * @param object $user Userå¯¹è±¡ç±»
+     * @param object $request Requestå¯¹è±¡ç±»
      */
     public function doMainValidate(Controller $controller, User $user, Request $request)
     {

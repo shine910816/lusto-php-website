@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2019-12-31 18:30:19
+Date: 2020-01-03 02:05:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,6 +38,29 @@ CREATE TABLE `admin_info` (
 -- ----------------------------
 INSERT INTO `admin_info` VALUES ('100', 'admin', '7aaq5g', '0c4c47baef406d9901f222d3d3bba898', '2', '1', '老板专用', '2019-12-29 23:59:59', '2019-12-31 11:57:33', '0');
 INSERT INTO `admin_info` VALUES ('101', 'e0001', 'rciizb', '0c5b04c203051eb1894ec18aea7efc70', '1', '1', '测试用', '2019-12-31 11:17:00', '2019-12-31 17:37:49', '0');
+
+-- ----------------------------
+-- Table structure for card_info
+-- ----------------------------
+DROP TABLE IF EXISTS `card_info`;
+CREATE TABLE `card_info` (
+  `custom_id` int(11) NOT NULL,
+  `card_id` varchar(20) DEFAULT NULL,
+  `card_package` int(11) NOT NULL,
+  `card_usable_infinity_flg` tinyint(4) NOT NULL,
+  `card_usable_count` tinyint(11) NOT NULL,
+  `card_expire` datetime NOT NULL,
+  `card_predict_amount` float(11,2) NOT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`custom_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of card_info
+-- ----------------------------
+INSERT INTO `card_info` VALUES ('1', '10010000001', '0', '0', '3', '2020-05-19 23:59:59', '10.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for custom_info

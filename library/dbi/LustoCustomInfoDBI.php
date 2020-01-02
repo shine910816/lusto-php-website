@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ¿ô¿ø&#24211;Áàºî&#31867;-custom_info
+ * æ•°æ®åº“æ“ä½œç±»-custom_info
  * @author Kinsama
  * @version 2020-01-02
  */
@@ -28,6 +28,38 @@ class LustoCustomInfoDBI
         } else {
             $sql .= " AND d.card_id = " . $dbi->quote($keyword);
         }
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["custom_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
+    public static function selectCustomCardInfo($custom_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT c.custom_id," .
+               " c.custom_name," .
+               " d.card_id," .
+               " c.custom_mobile," .
+               " c.custom_plate_region," .
+               " c.custom_plate," .
+               " c.custom_vehicle_type," .
+               " d.card_package," .
+               " d.card_usable_infinity_flg," .
+               " d.card_usable_count," .
+               " d.card_expire" .
+               " FROM custom_info c" .
+               " LEFT OUTER JOIN card_info d ON d.custom_id = c.custom_id" .
+               " WHERE c.del_flg = 0" .
+               " AND d.del_flg = 0" .
+               " AND c.custom_id = " .$custom_id;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

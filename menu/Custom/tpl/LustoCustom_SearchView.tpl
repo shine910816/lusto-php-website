@@ -10,9 +10,9 @@ $(document).ready(function(){
   </div>
   <div class="ui-body ui-body-a">
     <fieldset class="ui-grid-b">
-      <div class="ui-block-a"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a></div>
-      <div class="ui-block-b"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">旧卡用户</a></div>
-      <div class="ui-block-c"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">批量旧卡用户</a></div>
+      <div class="ui-block-a"><a href="./?menu=custom&act=detail" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a></div>
+      <div class="ui-block-b"><a href="./?menu=custom&act=detail&old=1" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">旧用户</a></div>
+      <div class="ui-block-c"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">批量旧用户</a></div>
     </fieldset>
   </div>
 </div>
@@ -57,7 +57,7 @@ $(document).ready(function(){
       <tbody>
 {^foreach from=$search_result key=custom_id item=custom_item^}
         <tr>
-          <td>{^if $custom_item["card_id"]^}{^$custom_item["card_id"]^}{^else^}未绑定{^/if^}</td>
+          <td><a href="./?menu=custom&act=detail&edit={^$custom_id^}" data-ajax="false">{^if $custom_item["card_id"]^}{^$custom_item["card_id"]^}{^else^}未绑定{^/if^}</a></td>
           <td>{^$custom_item["custom_name"]^}</td>
           <td>{^$custom_item["custom_mobile"]^}</td>
           <td>{^$region_list[$custom_item["custom_plate_region"]]^}{^$custom_item["custom_plate"]^}</td>

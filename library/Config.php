@@ -20,6 +20,7 @@ class Config
         $result["admin"]["admin_create"] = SYSTEM_AUTH_ADMIN;
         $result["admin"]["package_list"] = SYSTEM_AUTH_ADMIN;
         $result["custom"]["search"] = SYSTEM_AUTH_LOGIN;
+        $result["custom"]["detail"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -37,6 +38,7 @@ class Config
         $result["admin"]["admin_create"] = array('<a href="./?menu=admin&act=admin_list" data-ajax="false">成员管理</a>', "创建用户");
         $result["admin"]["package_list"] = array("套餐管理");
         $result["custom"]["search"] = array("会员管理");
+        $result["custom"]["detail"] = array('<a href="./?menu=custom&act=search" data-ajax="false">会员管理</a>', "会员详细");
         return $result;
     }
 

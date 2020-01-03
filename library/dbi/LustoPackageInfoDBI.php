@@ -8,6 +8,23 @@
 class LustoPackageInfoDBI
 {
 
+    public static function selectPackage($p_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM package_info WHERE del_flg = 0 AND p_id = " . $p_id . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[$row["p_id"]] = $row;
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function selectPackageList($special_flg = false)
     {
         $dbi = Database::getInstance();

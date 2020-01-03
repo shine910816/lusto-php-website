@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-03 02:05:35
+Date: 2020-01-03 18:32:20
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,6 +61,7 @@ CREATE TABLE `card_info` (
 -- Records of card_info
 -- ----------------------------
 INSERT INTO `card_info` VALUES ('1', '10010000001', '0', '0', '3', '2020-05-19 23:59:59', '10.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('2', '10010000002', '2001', '0', '10', '2020-11-23 23:59:59', '18.63', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -77,12 +78,13 @@ CREATE TABLE `custom_info` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
 INSERT INTO `custom_info` VALUES ('1', '李然', '13622082200', '12', 'HLR865', '1', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
+INSERT INTO `custom_info` VALUES ('2', '大哥', '13843838438', '11', 'HLR865', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for package_info

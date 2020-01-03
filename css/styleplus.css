@@ -83,3 +83,6 @@
 .disp_table tbody tr td {
   text-align:center;
 }
+.no_disp {
+  display:none!important;
+}

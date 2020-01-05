@@ -30,14 +30,23 @@ $(document).ready(function(){
         <label for="custom_name">会员名</label>
         <input type="text" name="custom_info[custom_name]" value="{^$custom_card_info["custom_name"]^}" id="custom_name" />
       </div>
+{^if isset($user_err_list["custom_name"])^}
+      <p class="fc_red">{^$user_err_list["custom_name"]^}</p>
+{^/if^}
       <div class="ui-field-contain">
         <label for="card_id">会员卡号</label>
         <input type="text" name="custom_info[card_id]" value="{^$custom_card_info["card_id"]^}" id="card_id" />
       </div>
+{^if isset($user_err_list["card_id"])^}
+      <p class="fc_red">{^$user_err_list["card_id"]^}</p>
+{^/if^}
       <div class="ui-field-contain">
         <label for="custom_mobile">手机号码</label>
         <input type="text" name="custom_info[custom_mobile]" value="{^$custom_card_info["custom_mobile"]^}" id="custom_mobile" />
       </div>
+{^if isset($user_err_list["custom_mobile"])^}
+      <p class="fc_red">{^$user_err_list["custom_mobile"]^}</p>
+{^/if^}
       <div class="ui-field-contain">
         <label for="custom_plate_region">车牌号码</label>
         <select name="custom_info[custom_plate_region]" id="custom_plate_region" data-inline="true">
@@ -50,6 +59,9 @@ $(document).ready(function(){
         <label for="custom_plate">&nbsp;</label>
         <input type="text" name="custom_info[custom_plate]" value="{^$custom_card_info["custom_plate"]^}" id="custom_plate" style="text-transform:uppercase;" />
       </div>
+{^if isset($user_err_list["custom_plate"])^}
+      <p class="fc_red">{^$user_err_list["custom_plate"]^}</p>
+{^/if^}
       <div class="ui-field-contain">
         <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true">
           <legend>车辆类型</legend>
@@ -58,7 +70,7 @@ $(document).ready(function(){
 {^/foreach^}
         </fieldset>
       </div>
-      <input type="hidden"{^if !$edit_mode^} name="custom_info[custom_vehicle_type]"{^/if^} value="{^$custom_card_info["custom_vehicle_type"]^}" id="custom_vehicle_type" />
+      <input type="hidden" name="custom_info[custom_vehicle_type]" value="{^$custom_card_info["custom_vehicle_type"]^}" id="custom_vehicle_type" />
     </div>
   </div>
   <h1></h1>
@@ -72,7 +84,7 @@ $(document).ready(function(){
         <tbody>
           <tr>
             <th>套餐名</th>
-            <td>{^if $old_package_flg^}旧卡套餐{^else^}{^$package_info["p_price"]|string_format:"%d"^}元/{^if $package_info["p_infinity_flg"]^}无限{^else^}{^$package_info["p_times"]^}{^/if^}次{^/if^}</td>
+            <td>{^if !$custom_card_info["card_package"]^}旧卡套餐{^else^}{^$package_info["p_price"]|string_format:"%d"^}元/{^if $package_info["p_infinity_flg"]^}无限{^else^}{^$package_info["p_times"]^}{^/if^}次{^/if^}</td>
           </tr>
           <tr>
             <th>剩余次数</th>
@@ -84,17 +96,6 @@ $(document).ready(function(){
           </tr>
         </tbody>
       </table>
-{^else^}
-{^if $create_old_mode^}
-      <!--旧套餐表单-->
-      <div class="ui-field-contain">
-        <label for="card_usable_count">剩余次数</label>
-        <input type="range" name="custom_info[card_usable_count]" value="{^$custom_card_info["card_usable_count"]^}" id="card_usable_count" min="0" max="30" data-highlight="true" />
-      </div>
-      <div class="ui-field-contain">
-        <label for="card_expire">有效期</label>
-        <input type="date" name="custom_info[card_expire]" value="{^$custom_card_info["card_expire"]|date_format:"%Y-%m-%d"^}" id="card_expire" />
-      </div>
 {^else^}
       <!--新套餐表单-->
       <div class="new_package_box{^if $custom_card_info["custom_vehicle_type"] neq "1"^} no_disp{^/if^}" id="new_package_1">
@@ -113,7 +114,6 @@ $(document).ready(function(){
 {^/foreach^}
         </fieldset>
       </div>
-{^/if^}
 {^/if^}
     </div>
   </div>

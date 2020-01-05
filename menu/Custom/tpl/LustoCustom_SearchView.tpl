@@ -9,10 +9,9 @@ $(document).ready(function(){
     <h1>注册会员</h1>
   </div>
   <div class="ui-body ui-body-a">
-    <fieldset class="ui-grid-b">
+    <fieldset class="ui-grid-a">
       <div class="ui-block-a"><a href="./?menu=custom&act=detail" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a></div>
-      <div class="ui-block-b"><a href="./?menu=custom&act=detail&old=1" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">旧用户</a></div>
-      <div class="ui-block-c"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">批量旧用户</a></div>
+      <div class="ui-block-b"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">旧用户</a></div>
     </fieldset>
   </div>
 </div>

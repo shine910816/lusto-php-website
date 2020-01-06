@@ -48,14 +48,11 @@ class LustoPackageInfoDBI
         return $data;
     }
 
-    public static function selectUsablePackageList($vehicle_type = "1", $old_user_flg = false)
+    public static function selectUsablePackageList($vehicle_type = "1")
     {
         $dbi = Database::getInstance();
         $sql = "SELECT * FROM package_info WHERE del_flg = 0" .
                " AND (p_vehicle_type = 0 OR p_vehicle_type = " . $vehicle_type . ")";
-        if ($old_user_flg) {
-            $sql .= " AND p_experience_flg = 0";
-        }
         $sql .= " ORDER BY p_price DESC, p_special_flg DESC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {

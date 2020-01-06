@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-03 18:32:20
+Date: 2020-01-06 18:28:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,6 +45,7 @@ INSERT INTO `admin_info` VALUES ('101', 'e0001', 'rciizb', '0c5b04c203051eb1894e
 DROP TABLE IF EXISTS `card_info`;
 CREATE TABLE `card_info` (
   `custom_id` int(11) NOT NULL,
+  `card_order_id` int(11) NOT NULL,
   `card_id` varchar(20) DEFAULT NULL,
   `card_package` int(11) NOT NULL,
   `card_usable_infinity_flg` tinyint(4) NOT NULL,
@@ -54,14 +55,15 @@ CREATE TABLE `card_info` (
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
-  PRIMARY KEY (`custom_id`)
+  PRIMARY KEY (`custom_id`,`card_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of card_info
 -- ----------------------------
-INSERT INTO `card_info` VALUES ('1', '10010000001', '0', '0', '3', '2020-05-19 23:59:59', '10.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
-INSERT INTO `card_info` VALUES ('2', '10010000002', '2001', '0', '10', '2020-11-23 23:59:59', '18.63', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('1', '1', '10010000001', '1001', '0', '3', '0000-00-00 00:00:00', '13.53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('2', '1', '10010000002', '2001', '0', '10', '0000-00-00 00:00:00', '17.34', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('2', '2', '10010000002', '2002', '0', '14', '0000-00-00 00:00:00', '19.92', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -96,7 +98,7 @@ CREATE TABLE `package_info` (
   `p_price` float(11,2) NOT NULL,
   `p_infinity_flg` tinyint(4) NOT NULL,
   `p_times` int(11) NOT NULL,
-  `p_experience_flg` tinyint(4) NOT NULL,
+  `p_predict_price` float(11,2) NOT NULL,
   `p_special_flg` tinyint(4) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
@@ -107,11 +109,11 @@ CREATE TABLE `package_info` (
 -- ----------------------------
 -- Records of package_info
 -- ----------------------------
-INSERT INTO `package_info` VALUES ('1001', '1', '298.00', '0', '22', '0', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('1002', '1', '200.00', '0', '14', '0', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('2001', '2', '298.00', '0', '16', '0', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('2002', '2', '200.00', '0', '10', '0', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('3001', '0', '998.00', '1', '0', '0', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('4000', '0', '499.00', '1', '0', '0', '1', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('4001', '1', '100.00', '0', '6', '1', '1', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
-INSERT INTO `package_info` VALUES ('4002', '2', '100.00', '0', '4', '1', '1', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('1001', '1', '798.00', '0', '59', '13.53', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('1002', '1', '498.00', '0', '32', '15.56', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('1003', '1', '298.00', '0', '17', '17.52', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('2001', '2', '798.00', '0', '46', '17.34', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('2002', '2', '498.00', '0', '25', '19.92', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('2003', '2', '298.00', '0', '14', '21.30', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('3001', '0', '998.00', '1', '0', '0.00', '0', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');
+INSERT INTO `package_info` VALUES ('4000', '0', '499.00', '1', '0', '0.00', '1', '2020-01-01 00:00:00', '2020-01-01 00:00:00', '0');

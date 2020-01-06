@@ -52,8 +52,16 @@ class LustoCustom_DetailAction extends ActionBase
             $edit_mode = true;
             $custom_id = $request->getParameter("edit");
         }
+        if (!$edit_mode) {
+            $usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
+            if ($controller->isError($usable_package_list)) {
+                $usable_package_list->setPos(__FILE__, __LINE__);
+                return $usable_package_list;
+            }
+        }
         $request->setAttribute("edit_mode", $edit_mode);
         $request->setAttribute("custom_id", $custom_id);
+        $request->setAttribute("usable_package_list", $usable_package_list);
         $request->setAttribute("vehicle_type_list", LustoCustomEntity::getVehicleTypeList());
         $request->setAttribute("plate_region_list", LustoCustomEntity::getPlateRegionList());
         if ($request->hasParameter("do_submit")) {
@@ -77,9 +85,8 @@ class LustoCustom_DetailAction extends ActionBase
         $edit_mode = $request->getAttribute("edit_mode");
         $custom_id = $request->getAttribute("custom_id");
         $custom_card_info = array();
-        $package_info = array();
         if ($edit_mode) {
-            $custom_card_info = LustoCustomInfoDBI::selectCustomCardInfo($custom_id);
+            $custom_card_info = LustoCustomInfoDBI::selectCustom($custom_id);
             if ($controller->isError($custom_card_info)) {
                 $custom_card_info->setPos(__FILE__, __LINE__);
                 return $custom_card_info;
@@ -90,19 +97,6 @@ class LustoCustom_DetailAction extends ActionBase
                 return $err;
             }
             $custom_card_info = $custom_card_info[$custom_id];
-            if ($custom_card_info["card_package"]) {
-                $package_info = LustoPackageInfoDBI::selectPackage($custom_card_info["card_package"]);
-                if ($controller->isError($package_info)) {
-                    $package_info->setPos(__FILE__, __LINE__);
-                    return $package_info;
-                }
-                if (!isset($package_info[$custom_card_info["card_package"]])) {
-                    $err = $controller->raiseError();
-                    $err->setPos(__FILE__, __LINE__);
-                    return $err;
-                }
-                $package_info = $package_info[$custom_card_info["card_package"]];
-            }
         } else {
             $custom_card_info["custom_name"] = "";
             $custom_card_info["card_id"] = "";
@@ -111,26 +105,14 @@ class LustoCustom_DetailAction extends ActionBase
             $custom_card_info["custom_plate"] = "";
             $custom_card_info["custom_vehicle_type"] = "1";
             $custom_card_info["card_package"] = "3001";
-            //$custom_card_info["card_usable_infinity_flg"] = "1";
-            //$custom_card_info["card_usable_count"] = "0";
-            //$custom_card_info["card_expire"] = date("Y-m-d H:i:s", mktime(0, 0, -1, date("m"), date("d"), date("Y") + 1));
-            $normal_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
-            if ($controller->isError($normal_usable_package_list)) {
-                $normal_usable_package_list->setPos(__FILE__, __LINE__);
-                return $normal_usable_package_list;
+            $usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
+            if ($controller->isError($usable_package_list)) {
+                $usable_package_list->setPos(__FILE__, __LINE__);
+                return $usable_package_list;
             }
-            $suv_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList(LustoPackageEntity::VEHICLE_TYPE_SUV);
-            if ($controller->isError($suv_usable_package_list)) {
-                $suv_usable_package_list->setPos(__FILE__, __LINE__);
-                return $suv_usable_package_list;
-            }
-            $request->setAttribute("normal_usable_package_list", $normal_usable_package_list);
-            $request->setAttribute("suv_usable_package_list", $suv_usable_package_list);
-            $request->setAttribute("vehicle_type_list", LustoCustomEntity::getVehicleTypeList());
-            $request->setAttribute("plate_region_list", LustoCustomEntity::getPlateRegionList());
+            $request->setAttribute("usable_package_list", $usable_package_list);
         }
         $request->setAttribute("custom_card_info", $custom_card_info);
-        $request->setAttribute("package_info", $package_info);
         return VIEW_DONE;
     }
 
@@ -174,22 +156,6 @@ class LustoCustom_DetailAction extends ActionBase
 
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-        $edit_mode = $request->getAttribute("edit_mode");
-        $create_old_mode = $request->getAttribute("create_old_mode");
-        if (!$edit_mode && !$create_old_mode) {
-            $normal_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
-            if ($controller->isError($normal_usable_package_list)) {
-                $normal_usable_package_list->setPos(__FILE__, __LINE__);
-                return $normal_usable_package_list;
-            }
-            $suv_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList(LustoPackageEntity::VEHICLE_TYPE_SUV);
-            if ($controller->isError($suv_usable_package_list)) {
-                $suv_usable_package_list->setPos(__FILE__, __LINE__);
-                return $suv_usable_package_list;
-            }
-            $request->setAttribute("normal_usable_package_list", $normal_usable_package_list);
-            $request->setAttribute("suv_usable_package_list", $suv_usable_package_list);
-        }
         return VIEW_DONE;
     }
 
@@ -201,37 +167,6 @@ Utility::testVariable($request->getAttributes());
 
     private function _doErrorExecute(Controller $controller, User $user, Request $request)
     {
-        $edit_mode = $request->getAttribute("edit_mode");
-        $custom_card_info = $request->getAttribute("custom_card_info");
-        if ($edit_mode) {
-            if ($custom_card_info["card_package"]) {
-                $package_info = LustoPackageInfoDBI::selectPackage($custom_card_info["card_package"]);
-                if ($controller->isError($package_info)) {
-                    $package_info->setPos(__FILE__, __LINE__);
-                    return $package_info;
-                }
-                if (!isset($package_info[$custom_card_info["card_package"]])) {
-                    $err = $controller->raiseError();
-                    $err->setPos(__FILE__, __LINE__);
-                    return $err;
-                }
-                $package_info = $package_info[$custom_card_info["card_package"]];
-                $request->setAttribute("package_info", $package_info);
-            }
-        } else {
-            $normal_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
-            if ($controller->isError($normal_usable_package_list)) {
-                $normal_usable_package_list->setPos(__FILE__, __LINE__);
-                return $normal_usable_package_list;
-            }
-            $suv_usable_package_list = LustoPackageInfoDBI::selectUsablePackageList(LustoPackageEntity::VEHICLE_TYPE_SUV);
-            if ($controller->isError($suv_usable_package_list)) {
-                $suv_usable_package_list->setPos(__FILE__, __LINE__);
-                return $suv_usable_package_list;
-            }
-            $request->setAttribute("normal_usable_package_list", $normal_usable_package_list);
-            $request->setAttribute("suv_usable_package_list", $suv_usable_package_list);
-        }
         return VIEW_DONE;
     }
 }

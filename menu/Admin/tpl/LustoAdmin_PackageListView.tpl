@@ -16,7 +16,6 @@
           <th>车型</th>
           <th>价格</th>
           <th>次数</th>
-          <th>体验卡</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +25,6 @@
           <td>{^$vehicle_list[$package_item["p_vehicle_type"]]^}</td>
           <td>{^$package_item["p_price"]^}</td>
           <td>{^if $package_item["p_infinity_flg"]^}不限次数{^else^}{^$package_item["p_times"]^}{^/if^}</td>
-          <td>{^if $package_item["p_experience_flg"]^}是{^/if^}</td>
         </tr>
 {^/foreach^}
       </tbody>

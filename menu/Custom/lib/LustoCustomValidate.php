@@ -10,13 +10,16 @@ class LustoCustomValidate
 
     public static function checkCustomName($param)
     {
+        if (!Validate::checkNotNull($param)) {
+            return false;
+        }
         return Validate::checkChinese($param);
     }
 
     public static function checkCardId($param)
     {
-        if (is_null($param) || $param === "") {
-            return true;
+        if (!Validate::checkNotNull($param)) {
+            return false;
         }
         if (!preg_match("/^[0-9]{5,11}$/", $param)) {
             return false;
@@ -27,7 +30,7 @@ class LustoCustomValidate
     public static function checkCustomMobile($param)
     {
         if (!Validate::checkNotNull($param)) {
-            return false;
+            return true;
         }
         return Validate::checkMobileNumber($param);
     }
@@ -35,7 +38,7 @@ class LustoCustomValidate
     public static function checkPlateNumber($param)
     {
         if (!Validate::checkNotNull($param)) {
-            return false;
+            return true;
         }
         if (!preg_match("/^[a-z0-9]{6,7}$/i", $param)) {
             return false;

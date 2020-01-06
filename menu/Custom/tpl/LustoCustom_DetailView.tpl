@@ -74,49 +74,25 @@ $(document).ready(function(){
     </div>
   </div>
   <h1></h1>
+{^if !$edit_mode^}
   <div class="ui-corner-all custom-corners">
     <div class="ui-bar ui-bar-a ta_c">
       <h1>套餐详细</h1>
     </div>
     <div class="ui-body ui-body-a">
-{^if $edit_mode^}
-      <table data-role="table" data-mode="columntoggle:none" class="ui-responsive">
-        <tbody>
-          <tr>
-            <th>套餐名</th>
-            <td>{^if !$custom_card_info["card_package"]^}旧卡套餐{^else^}{^$package_info["p_price"]|string_format:"%d"^}元/{^if $package_info["p_infinity_flg"]^}无限{^else^}{^$package_info["p_times"]^}{^/if^}次{^/if^}</td>
-          </tr>
-          <tr>
-            <th>剩余次数</th>
-            <td>{^if $custom_card_info["card_usable_infinity_flg"]^}无限{^else^}{^$custom_card_info["card_usable_count"]^}{^/if^}次</td>
-          </tr>
-          <tr>
-            <th>有效期</th>
-            <td>{^$custom_card_info["card_expire"]|date_format:"%Y-%m-%d"^}</td>
-          </tr>
-        </tbody>
-      </table>
-{^else^}
-      <!--新套餐表单-->
-      <div class="new_package_box{^if $custom_card_info["custom_vehicle_type"] neq "1"^} no_disp{^/if^}" id="new_package_1">
+{^foreach from=$usable_package_list key=vehicle_type_key item=package_list^}
+      <div class="new_package_box{^if $custom_card_info["custom_vehicle_type"] neq $vehicle_type_key^} no_disp{^/if^}" id="new_package_{^$vehicle_type_key^}">
         <fieldset data-role="controlgroup">
-{^foreach from=$normal_usable_package_list key=package_id item=package_item^}
-          <input type="radio" name="package_info[1]" value="{^$package_id^}" id="package_id_1_{^$package_id^}"{^if $package_id eq $custom_card_info["card_package"]^} checked{^/if^} />
-          <label for="package_id_1_{^$package_id^}">{^$package_item["p_price"]|string_format:"%d"^}元/{^if $package_item["p_infinity_flg"]^}无限{^else^}{^$package_item["p_times"]^}{^/if^}次{^if $package_item["p_experience_flg"]^}(体验卡){^elseif $package_item["p_special_flg"]^}(优惠活动){^/if^}</label>
+{^foreach from=$package_list key=package_id item=package_item^}
+          <input type="radio" name="package_info[{^$vehicle_type_key^}]" value="{^$package_id^}" id="package_id_{^$vehicle_type_key^}_{^$package_id^}"{^if $package_id eq $custom_card_info["card_package"]^} checked{^/if^} />
+          <label for="package_id_{^$vehicle_type_key^}_{^$package_id^}">{^$package_item["p_price"]|string_format:"%d"^}元/{^if $package_item["p_infinity_flg"]^}无限{^else^}{^$package_item["p_times"]^}{^/if^}次{^if $package_item["p_special_flg"]^}(优惠活动){^/if^}</label>
 {^/foreach^}
         </fieldset>
       </div>
-      <div class="new_package_box{^if $custom_card_info["custom_vehicle_type"] neq "2"^} no_disp{^/if^}" id="new_package_2">
-        <fieldset data-role="controlgroup">
-{^foreach from=$suv_usable_package_list key=package_id item=package_item^}
-          <input type="radio" name="package_info[2]" value="{^$package_id^}" id="package_id_2_{^$package_id^}"{^if $package_id eq $custom_card_info["card_package"]^} checked{^/if^} />
-          <label for="package_id_2_{^$package_id^}">{^$package_item["p_price"]|string_format:"%d"^}元/{^if $package_item["p_infinity_flg"]^}无限{^else^}{^$package_item["p_times"]^}{^/if^}次{^if $package_item["p_experience_flg"]^}(体验卡){^elseif $package_item["p_special_flg"]^}(优惠活动){^/if^}</label>
 {^/foreach^}
-        </fieldset>
-      </div>
-{^/if^}
     </div>
   </div>
+{^/if^}
   <button type="submit" name="do_submit" value="1" class="ui-shadow ui-btn ui-corner-all ui-btn-b">确认</button>
 </form>
 {^include file=$comfooter_file^}

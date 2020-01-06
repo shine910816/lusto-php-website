@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-06 18:28:47
+Date: 2020-01-07 00:29:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -46,7 +46,6 @@ DROP TABLE IF EXISTS `card_info`;
 CREATE TABLE `card_info` (
   `custom_id` int(11) NOT NULL,
   `card_order_id` int(11) NOT NULL,
-  `card_id` varchar(20) DEFAULT NULL,
   `card_package` int(11) NOT NULL,
   `card_usable_infinity_flg` tinyint(4) NOT NULL,
   `card_usable_count` tinyint(11) NOT NULL,
@@ -61,9 +60,9 @@ CREATE TABLE `card_info` (
 -- ----------------------------
 -- Records of card_info
 -- ----------------------------
-INSERT INTO `card_info` VALUES ('1', '1', '10010000001', '1001', '0', '3', '0000-00-00 00:00:00', '13.53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
-INSERT INTO `card_info` VALUES ('2', '1', '10010000002', '2001', '0', '10', '0000-00-00 00:00:00', '17.34', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
-INSERT INTO `card_info` VALUES ('2', '2', '10010000002', '2002', '0', '14', '0000-00-00 00:00:00', '19.92', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('1', '1', '1001', '0', '3', '0000-00-00 00:00:00', '13.53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('2', '1', '2001', '0', '10', '0000-00-00 00:00:00', '17.34', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `card_info` VALUES ('2', '2', '2002', '0', '14', '0000-00-00 00:00:00', '19.92', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -71,10 +70,11 @@ INSERT INTO `card_info` VALUES ('2', '2', '10010000002', '2002', '0', '14', '000
 DROP TABLE IF EXISTS `custom_info`;
 CREATE TABLE `custom_info` (
   `custom_id` int(11) NOT NULL AUTO_INCREMENT,
-  `custom_name` varchar(50) DEFAULT NULL,
+  `card_id` int(11) NOT NULL,
   `custom_mobile` varchar(11) DEFAULT NULL,
   `custom_plate_region` tinyint(4) NOT NULL,
   `custom_plate` varchar(8) DEFAULT NULL,
+  `custom_name` varchar(50) DEFAULT NULL,
   `custom_vehicle_type` tinyint(4) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
@@ -85,8 +85,8 @@ CREATE TABLE `custom_info` (
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
-INSERT INTO `custom_info` VALUES ('1', '李然', '13622082200', '12', 'HLR865', '1', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
-INSERT INTO `custom_info` VALUES ('2', '大哥', '13843838438', '11', 'HLR865', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `custom_info` VALUES ('1', '1001000001', '13622082200', '12', 'HLR865', '李然', '1', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
+INSERT INTO `custom_info` VALUES ('2', '1001000002', '13843838438', '11', 'HLR865', '大哥', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for package_info

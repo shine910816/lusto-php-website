@@ -8,25 +8,24 @@
 class LustoCustomInfoDBI
 {
 
-    public static function searchCustom($keyword, $type = "2")
+    public static function searchCustom($keyword, $type = "1")
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT c.custom_id," .
-               " c.custom_name," .
-               " d.card_id," .
-               " c.custom_mobile," .
-               " c.custom_plate_region," .
-               " c.custom_plate," .
-               " c.custom_vehicle_type" .
-               " FROM custom_info c" .
-               " LEFT OUTER JOIN card_info d ON d.custom_id = c.custom_id" .
-               " WHERE c.del_flg = 0 AND d.del_flg = 0";
+        $sql = "SELECT custom_id," .
+               " card_id," .
+               " custom_mobile," .
+               " custom_plate_region," .
+               " custom_plate," .
+               " custom_name," .
+               " custom_vehicle_type" .
+               " FROM custom_info" .
+               " WHERE del_flg = 0";
         if ($type == "2") {
-            $sql .= " AND c.custom_mobile = " . $dbi->quote($keyword);
+            $sql .= " AND custom_mobile = " . $dbi->quote($keyword);
         } elseif ($type == "3") {
-            $sql .= " AND c.custom_plate = " . $dbi->quote($keyword);
+            $sql .= " AND custom_plate = " . $dbi->quote($keyword);
         } else {
-            $sql .= " AND d.card_id = " . $dbi->quote($keyword);
+            $sql .= " AND card_id = " . $dbi->quote($keyword);
         }
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
@@ -41,25 +40,10 @@ class LustoCustomInfoDBI
         return $data;
     }
 
-    public static function selectCustomCardInfo($custom_id)
+    public static function selectCustom($custom_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT c.custom_id," .
-               " c.custom_name," .
-               " d.card_id," .
-               " c.custom_mobile," .
-               " c.custom_plate_region," .
-               " c.custom_plate," .
-               " c.custom_vehicle_type," .
-               " d.card_package," .
-               " d.card_usable_infinity_flg," .
-               " d.card_usable_count," .
-               " d.card_expire" .
-               " FROM custom_info c" .
-               " LEFT OUTER JOIN card_info d ON d.custom_id = c.custom_id" .
-               " WHERE c.del_flg = 0" .
-               " AND d.del_flg = 0" .
-               " AND c.custom_id = " .$custom_id;
+        $sql = "SELECT * FROM custom_info WHERE del_flg = 0 AND custom_id = " .$custom_id;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

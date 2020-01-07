@@ -23,7 +23,7 @@ $(document).ready(function(){
 {^/if^}
   <div class="ui-corner-all custom-corners">
     <div class="ui-bar ui-bar-a ta_c">
-      <h1>会员详细</h1>
+      <h1>会员信息{^if $edit_mode^}编辑{^else^}录入{^/if^}</h1>
     </div>
     <div class="ui-body ui-body-a">
       <div class="ui-field-contain">

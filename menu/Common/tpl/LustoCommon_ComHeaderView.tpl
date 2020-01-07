@@ -33,7 +33,9 @@
 <p class="nav_bar">
   <a href="./" data-ajax="false">首页</a>
 {^foreach from=$disp_nav_list item=disp_nav_item^}
+{^if $disp_nav_item^}
   &gt; {^$disp_nav_item^}
+{^/if^}
 {^/foreach^}
 </p>
 {^/if^}

@@ -9,10 +9,7 @@ $(document).ready(function(){
     <h1>注册会员</h1>
   </div>
   <div class="ui-body ui-body-a">
-    <fieldset class="ui-grid-a">
-      <div class="ui-block-a"><a href="./?menu=custom&act=detail" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a></div>
-      <div class="ui-block-b"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">旧用户</a></div>
-    </fieldset>
+    <a href="./?menu=custom&act=input" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a>
   </div>
 </div>
 <h1></h1>
@@ -56,7 +53,7 @@ $(document).ready(function(){
       <tbody>
 {^foreach from=$search_result key=custom_id item=custom_item^}
         <tr>
-          <td><a href="./?menu=custom&act=detail&edit={^$custom_id^}" data-ajax="false">{^if $custom_item["card_id"]^}{^$custom_item["card_id"]^}{^else^}未绑定{^/if^}</a></td>
+          <td><a href="./?menu=custom&act=detail&custom_id={^$custom_id^}" data-ajax="false">{^if $custom_item["card_id"]^}{^$custom_item["card_id"]^}{^else^}未绑定{^/if^}</a></td>
           <td>{^$custom_item["custom_name"]^}</td>
           <td>{^$custom_item["custom_mobile"]^}</td>
           <td>{^$region_list[$custom_item["custom_plate_region"]]^}{^$custom_item["custom_plate"]^}</td>

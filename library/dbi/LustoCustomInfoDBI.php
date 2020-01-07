@@ -43,7 +43,7 @@ class LustoCustomInfoDBI
     public static function selectCustom($custom_id)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT * FROM custom_info WHERE del_flg = 0 AND custom_id = " .$custom_id;
+        $sql = "SELECT * FROM custom_info WHERE del_flg = 0 AND custom_id = " . $custom_id;
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -55,6 +55,44 @@ class LustoCustomInfoDBI
         }
         $result->free();
         return $data;
+    }
+
+    public static function selectCustomByCardId($card_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM custom_info WHERE del_flg = 0 AND card_id = " . $dbi->quote($card_id) . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        $result->free();
+        if (count($data) == 1) {
+            return $data[0];
+        } else {
+            return array();
+        }
+    }
+
+    public static function selectCardIdCount($card_id)
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT COUNT(*) FROM custom_info WHERE del_flg = 0 AND card_id = " . $dbi->quote($card_id) . " LIMIT 1";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row["COUNT(*)"];
+        }
+        $result->free();
+        return $data[0];
     }
 }
 ?>

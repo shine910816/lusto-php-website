@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-07 18:29:14
+Date: 2020-01-08 00:23:44
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -38,31 +38,6 @@ CREATE TABLE `admin_info` (
 -- ----------------------------
 INSERT INTO `admin_info` VALUES ('100', 'admin', '7aaq5g', '0c4c47baef406d9901f222d3d3bba898', '2', '1', '老板专用', '2019-12-29 23:59:59', '2019-12-31 11:57:33', '0');
 INSERT INTO `admin_info` VALUES ('101', 'e0001', 'rciizb', '0c5b04c203051eb1894ec18aea7efc70', '1', '1', '测试用', '2019-12-31 11:17:00', '2019-12-31 17:37:49', '0');
-
--- ----------------------------
--- Table structure for card_info
--- ----------------------------
-DROP TABLE IF EXISTS `card_info`;
-CREATE TABLE `card_info` (
-  `custom_id` int(11) NOT NULL,
-  `card_order_id` int(11) NOT NULL,
-  `card_package` int(11) NOT NULL,
-  `card_usable_infinity_flg` tinyint(4) NOT NULL,
-  `card_usable_count` tinyint(11) NOT NULL,
-  `card_expire` datetime NOT NULL,
-  `card_predict_amount` float(11,2) NOT NULL,
-  `insert_date` datetime NOT NULL,
-  `update_date` datetime NOT NULL,
-  `del_flg` tinyint(4) NOT NULL,
-  PRIMARY KEY (`custom_id`,`card_order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of card_info
--- ----------------------------
-INSERT INTO `card_info` VALUES ('1', '1', '1001', '0', '3', '0000-00-00 00:00:00', '13.53', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
-INSERT INTO `card_info` VALUES ('2', '1', '2001', '0', '10', '0000-00-00 00:00:00', '17.34', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
-INSERT INTO `card_info` VALUES ('2', '2', '2002', '0', '14', '0000-00-00 00:00:00', '19.92', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for custom_change_history
@@ -95,7 +70,7 @@ CREATE TABLE `custom_info` (
   `custom_plate` varchar(8) DEFAULT NULL,
   `custom_name` varchar(50) DEFAULT NULL,
   `custom_vehicle_type` tinyint(4) NOT NULL,
-  `card_id` int(11) NOT NULL,
+  `card_id` varchar(20) NOT NULL,
   `card_usable_infinity_flg` tinyint(4) NOT NULL,
   `card_usable_count` int(11) NOT NULL,
   `card_expire` datetime NOT NULL,
@@ -104,13 +79,36 @@ CREATE TABLE `custom_info` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
-INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '1001000001', '0', '0', '0000-00-00 00:00:00', '0.00', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
-INSERT INTO `custom_info` VALUES ('2', '13843838438', '11', 'HLR865', '大哥', '2', '1001000002', '0', '0', '0000-00-00 00:00:00', '0.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '10001000001', '0', '17', '0000-00-00 00:00:00', '0.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+
+-- ----------------------------
+-- Table structure for custom_package_info
+-- ----------------------------
+DROP TABLE IF EXISTS `custom_package_info`;
+CREATE TABLE `custom_package_info` (
+  `custom_id` int(11) NOT NULL,
+  `card_order_id` int(11) NOT NULL,
+  `card_package` int(11) NOT NULL,
+  `card_usable_infinity_flg` tinyint(4) NOT NULL,
+  `card_usable_count` int(11) NOT NULL,
+  `card_current_count` int(11) NOT NULL,
+  `card_expire` datetime NOT NULL,
+  `card_predict_amount` float(11,2) NOT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`custom_id`,`card_order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of custom_package_info
+-- ----------------------------
+INSERT INTO `custom_package_info` VALUES ('1', '1', '1003', '0', '17', '17', '0000-00-00 00:00:00', '17.52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for package_info

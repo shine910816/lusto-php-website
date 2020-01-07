@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-07 00:29:16
+Date: 2020-01-07 18:29:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,17 +65,41 @@ INSERT INTO `card_info` VALUES ('2', '1', '2001', '0', '10', '0000-00-00 00:00:0
 INSERT INTO `card_info` VALUES ('2', '2', '2002', '0', '14', '0000-00-00 00:00:00', '19.92', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
+-- Table structure for custom_change_history
+-- ----------------------------
+DROP TABLE IF EXISTS `custom_change_history`;
+CREATE TABLE `custom_change_history` (
+  `history_id` int(11) NOT NULL AUTO_INCREMENT,
+  `custom_id` int(11) NOT NULL,
+  `change_type` tinyint(4) NOT NULL,
+  `change_from` varchar(50) DEFAULT NULL,
+  `change_to` varchar(50) DEFAULT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`history_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of custom_change_history
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for custom_info
 -- ----------------------------
 DROP TABLE IF EXISTS `custom_info`;
 CREATE TABLE `custom_info` (
   `custom_id` int(11) NOT NULL AUTO_INCREMENT,
-  `card_id` int(11) NOT NULL,
   `custom_mobile` varchar(11) DEFAULT NULL,
   `custom_plate_region` tinyint(4) NOT NULL,
   `custom_plate` varchar(8) DEFAULT NULL,
   `custom_name` varchar(50) DEFAULT NULL,
   `custom_vehicle_type` tinyint(4) NOT NULL,
+  `card_id` int(11) NOT NULL,
+  `card_usable_infinity_flg` tinyint(4) NOT NULL,
+  `card_usable_count` int(11) NOT NULL,
+  `card_expire` datetime NOT NULL,
+  `card_predict_amount` float(11,2) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
@@ -85,8 +109,8 @@ CREATE TABLE `custom_info` (
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
-INSERT INTO `custom_info` VALUES ('1', '1001000001', '13622082200', '12', 'HLR865', '李然', '1', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
-INSERT INTO `custom_info` VALUES ('2', '1001000002', '13843838438', '11', 'HLR865', '大哥', '2', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '1001000001', '0', '0', '0000-00-00 00:00:00', '0.00', '2019-12-31 18:14:20', '2019-12-31 18:14:27', '0');
+INSERT INTO `custom_info` VALUES ('2', '13843838438', '11', 'HLR865', '大哥', '2', '1001000002', '0', '0', '0000-00-00 00:00:00', '0.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
 
 -- ----------------------------
 -- Table structure for package_info

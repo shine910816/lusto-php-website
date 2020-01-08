@@ -94,5 +94,27 @@ class LustoCustomInfoDBI
         $result->free();
         return $data[0];
     }
+
+    public static function insertCustom($insert_data)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->insert("custom_info", $insert_data);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
+
+    public static function updateCustom($update_data, $custom_id)
+    {
+        $dbi = Database::getInstance();
+        $result = $dbi->update("custom_info", $update_data, "custom_id = " . $custom_id);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        return $result;
+    }
 }
 ?>

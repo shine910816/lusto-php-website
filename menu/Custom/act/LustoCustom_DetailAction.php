@@ -36,6 +36,19 @@ class LustoCustom_DetailAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
+        $custom_id = $request->getParameter("custom_id");
+        $custom_info = LustoCustomInfoDBI::selectCustom($custom_id);
+        if ($controller->isError($custom_info)) {
+            $custom_info->setPos(__FILE__, __LINE__);
+            return $custom_info;
+        }
+        if (empty($custom_info)) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $request->setAttribute("custom_id", $custom_id);
+        $request->setAttribute("custom_info", $custom_info[$custom_id]);
         return VIEW_DONE;
     }
 

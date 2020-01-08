@@ -6,15 +6,6 @@ $(document).ready(function(){
 </script>
 <div class="ui-corner-all custom-corners">
   <div class="ui-bar ui-bar-a ta_c">
-    <h1>注册会员</h1>
-  </div>
-  <div class="ui-body ui-body-a">
-    <a href="./?menu=custom&act=input" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户</a>
-  </div>
-</div>
-<h1></h1>
-<div class="ui-corner-all custom-corners">
-  <div class="ui-bar ui-bar-a ta_c">
     <h1>查询会员</h1>
   </div>
   <div class="ui-body ui-body-a">
@@ -68,5 +59,6 @@ $(document).ready(function(){
   </div>
 {^/if^}
 </div>
+<a href="./?menu=custom&act=input" class="ui-shadow ui-btn ui-corner-all ui-btn-b" data-ajax="false">新用户注册</a>
 <a href="./" data-ajax="false" class="ui-shadow ui-btn ui-corner-all ui-btn-a">返回</a>
 {^include file=$comfooter_file^}

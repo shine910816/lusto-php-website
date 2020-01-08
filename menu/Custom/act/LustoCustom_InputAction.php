@@ -140,7 +140,7 @@ class LustoCustom_InputAction extends ActionBase
             $card_id_count->setPos(__FILE__, __LINE__);
             return $card_id_count;
         }
-        if ($card_id_count) {
+        if (!$edit_mode && $card_id_count) {
             $request->setError("card_id", "会员卡号已被绑定");
         }
         if (!LustoCustomValidate::checkCustomMobile($custom_card_info["custom_mobile"])) {
@@ -174,7 +174,150 @@ class LustoCustom_InputAction extends ActionBase
 
     private function _doSubmitExecute(Controller $controller, User $user, Request $request)
     {
-Utility::testVariable($request->getAttributes());
+        $edit_mode = $request->getAttribute("edit_mode");
+        $custom_card_info = $request->getAttribute("custom_card_info");
+        $plate_region_list = $request->getAttribute("plate_region_list");
+        $custom_id = "0";
+        $operator_id = $user->getCustomId();
+        $dbi = Database::getInstance();
+//Utility::testVariable($request->getAttributes());
+        if ($edit_mode) {
+            $custom_id = $request->getAttribute("custom_id");
+            $current_custom_info = LustoCustomInfoDBI::selectCustom($custom_id);
+            if ($controller->isError($current_custom_info)) {
+                $current_custom_info->setPos(__FILE__, __LINE__);
+                return $current_custom_info;
+            }
+            if (!isset($current_custom_info[$custom_id])) {
+                $err = $controller->raiseError();
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $current_custom_info = $current_custom_info[$custom_id];
+            $custom_update = array();
+            $history_insert = array();
+            if ($custom_card_info["card_id"] != $current_custom_info["card_id"]) {
+                $custom_update["card_id"] = $custom_card_info["card_id"];
+                $history_insert[LustoCustomChangeHistoryEntity::CHANGE_TYPE_CARD_ID] = array(
+                    "change_from" => $current_custom_info["card_id"],
+                    "change_to" => $custom_card_info["card_id"]
+                );
+            }
+            if ($custom_card_info["custom_mobile"] != $current_custom_info["custom_mobile"]) {
+                $custom_update["custom_mobile"] = $custom_card_info["custom_mobile"];
+                $history_insert[LustoCustomChangeHistoryEntity::CHANGE_TYPE_MOBILE] = array(
+                    "change_from" => $current_custom_info["custom_mobile"],
+                    "change_to" => $custom_card_info["custom_mobile"]
+                );
+            }
+            if ((!$current_custom_info["custom_plate"] && $custom_card_info["custom_plate"]) ||
+                ($current_custom_info["custom_plate"] && ($custom_card_info["custom_plate"] != $current_custom_info["custom_plate"] ||
+                $custom_card_info["custom_plate_region"] != $current_custom_info["custom_plate_region"]))) {
+                $custom_update["custom_plate_region"] = $custom_card_info["custom_plate_region"];
+                $custom_update["custom_plate"] = strtoupper($custom_card_info["custom_plate"]);
+                $plate_change_from = "";
+                if ($current_custom_info["custom_plate"]) {
+                    $plate_change_from = $plate_region_list[$current_custom_info["custom_plate_region"]] . strtoupper($current_custom_info["custom_plate"]);
+                }
+                $history_insert[LustoCustomChangeHistoryEntity::CHANGE_TYPE_PLATE] = array(
+                    "change_from" => $plate_change_from,
+                    "change_to" => $plate_region_list[$custom_card_info["custom_plate_region"]] . strtoupper($custom_card_info["custom_plate"])
+                );
+            }
+            if ($custom_card_info["custom_name"] != $current_custom_info["custom_name"]) {
+                $custom_update["custom_name"] = $custom_card_info["custom_name"];
+                $history_insert[LustoCustomChangeHistoryEntity::CHANGE_TYPE_NAME] = array(
+                    "change_from" => $current_custom_info["custom_name"],
+                    "change_to" => $custom_card_info["custom_name"]
+                );
+            }
+            if (!empty($custom_update)) {
+                $begin_res = $dbi->begin();
+                if ($controller->isError($begin_res)) {
+                    $dbi->rollback();
+                    $begin_res->setPos(__FILE__, __LINE__);
+                    return $begin_res;
+                }
+                $update_res = LustoCustomInfoDBI::updateCustom($custom_update, $custom_id);
+                if ($controller->isError($update_res)) {
+                    $dbi->rollback();
+                    $update_res->setPos(__FILE__, __LINE__);
+                    return $update_res;
+                }
+                foreach ($history_insert as $change_type => $history_insert) {
+                    $history_insert["custom_id"] = $custom_id;
+                    $history_insert["change_type"] = $change_type;
+                    $history_insert["operator_id"] = $operator_id;
+                    $insert_res = LustoCustomChangeHistoryDBI::insertCustomPackage($history_insert);
+                    if ($controller->isError($insert_res)) {
+                        $dbi->rollback();
+                        $insert_res->setPos(__FILE__, __LINE__);
+                        return $insert_res;
+                    }
+                }
+                $commit_res = $dbi->commit();
+                if ($controller->isError($commit_res)) {
+                    $dbi->rollback();
+                    $commit_res->setPos(__FILE__, __LINE__);
+                    return $commit_res;
+                }
+            }
+        } else {
+            $usable_package_list = $request->getAttribute("usable_package_list");
+            $package_info = $usable_package_list[$custom_card_info["custom_vehicle_type"]][$custom_card_info["card_package"]];
+            $custom_insert = array(
+                "custom_mobile" => $custom_card_info["custom_mobile"],
+                "custom_plate_region" => $custom_card_info["custom_plate_region"],
+                "custom_plate" => strtoupper($custom_card_info["custom_plate"]),
+                "custom_name" => $custom_card_info["custom_name"],
+                "custom_vehicle_type" => $custom_card_info["custom_vehicle_type"],
+                "card_id" => $custom_card_info["card_id"],
+                "card_usable_infinity_flg" => $package_info["p_infinity_flg"]
+            );
+            $package_insert = array();
+            $package_insert["card_order_id"] = "1";
+            $package_insert["card_package"] = $package_info["p_id"];
+            $package_insert["card_price"] = $package_info["p_price"];
+            $package_insert["card_usable_infinity_flg"] = $package_info["p_infinity_flg"];
+            $package_insert["operator_id"] = $operator_id;
+            if ($package_info["p_infinity_flg"]) {
+                $package_insert["card_usable_count"] = "0";
+                $package_insert["card_current_count"] = "0";
+                $package_insert["card_expire"] = date("Y-m-d H:i:s", mktime(0, 0, -1, date("m"), date("d"), date("Y") + 1));
+                $package_insert["card_predict_amount"] = "0";
+            } else {
+                $package_insert["card_usable_count"] = $package_info["p_times"];
+                $package_insert["card_current_count"] = $package_info["p_times"];
+                $package_insert["card_expire"] = "0000-00-00 00:00:00";
+                $package_insert["card_predict_amount"] = $package_info["p_predict_price"];
+            }
+            $begin_res = $dbi->begin();
+            if ($controller->isError($begin_res)) {
+                $dbi->rollback();
+                $begin_res->setPos(__FILE__, __LINE__);
+                return $begin_res;
+            }
+            $custom_id = LustoCustomInfoDBI::insertCustom($custom_insert);
+            if ($controller->isError($custom_id)) {
+                $dbi->rollback();
+                $custom_id->setPos(__FILE__, __LINE__);
+                return $custom_id;
+            }
+            $package_insert["custom_id"] = $custom_id;
+            $insert_res = LustoCustomPackageInfoDBI::insertCustomPackage($package_insert);
+            if ($controller->isError($insert_res)) {
+                $dbi->rollback();
+                $insert_res->setPos(__FILE__, __LINE__);
+                return $insert_res;
+            }
+            $commit_res = $dbi->commit();
+            if ($controller->isError($commit_res)) {
+                $dbi->rollback();
+                $commit_res->setPos(__FILE__, __LINE__);
+                return $commit_res;
+            }
+        }
+        $controller->redirect("?menu=custom&act=detail&custom_id=" . $custom_id);
         return VIEW_DONE;
     }
 

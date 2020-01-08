@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-08 00:23:44
+Date: 2020-01-08 18:33:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -49,15 +49,18 @@ CREATE TABLE `custom_change_history` (
   `change_type` tinyint(4) NOT NULL,
   `change_from` varchar(50) DEFAULT NULL,
   `change_to` varchar(50) DEFAULT NULL,
+  `operator_id` int(11) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_change_history
 -- ----------------------------
+INSERT INTO `custom_change_history` VALUES ('1', '1', '3', '', '津HLR865', '100', '2020-01-08 18:23:41', '2020-01-08 18:23:41', '0');
+INSERT INTO `custom_change_history` VALUES ('2', '2', '4', '大哥', '张鹤鹏', '100', '2020-01-08 18:25:33', '2020-01-08 18:25:33', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -72,19 +75,17 @@ CREATE TABLE `custom_info` (
   `custom_vehicle_type` tinyint(4) NOT NULL,
   `card_id` varchar(20) NOT NULL,
   `card_usable_infinity_flg` tinyint(4) NOT NULL,
-  `card_usable_count` int(11) NOT NULL,
-  `card_expire` datetime NOT NULL,
-  `card_predict_amount` float(11,2) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
-INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '10001000001', '0', '17', '0000-00-00 00:00:00', '0.00', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '10001000001', '0', '2020-01-08 18:23:07', '2020-01-08 18:23:41', '0');
+INSERT INTO `custom_info` VALUES ('2', '15750293735', '12', 'ADC416', '张鹤鹏', '2', '10001000002', '1', '2020-01-08 18:24:21', '2020-01-08 18:25:32', '0');
 
 -- ----------------------------
 -- Table structure for custom_package_info
@@ -94,11 +95,13 @@ CREATE TABLE `custom_package_info` (
   `custom_id` int(11) NOT NULL,
   `card_order_id` int(11) NOT NULL,
   `card_package` int(11) NOT NULL,
+  `card_price` float(11,2) NOT NULL,
   `card_usable_infinity_flg` tinyint(4) NOT NULL,
   `card_usable_count` int(11) NOT NULL,
   `card_current_count` int(11) NOT NULL,
   `card_expire` datetime NOT NULL,
   `card_predict_amount` float(11,2) NOT NULL,
+  `operator_id` int(11) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
@@ -108,7 +111,8 @@ CREATE TABLE `custom_package_info` (
 -- ----------------------------
 -- Records of custom_package_info
 -- ----------------------------
-INSERT INTO `custom_package_info` VALUES ('1', '1', '1003', '0', '17', '17', '0000-00-00 00:00:00', '17.52', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '0');
+INSERT INTO `custom_package_info` VALUES ('1', '1', '1001', '798.00', '0', '59', '59', '0000-00-00 00:00:00', '13.53', '100', '2020-01-08 18:23:07', '2020-01-08 18:23:07', '0');
+INSERT INTO `custom_package_info` VALUES ('2', '1', '3001', '998.00', '1', '0', '0', '2021-01-07 23:59:59', '0.00', '100', '2020-01-08 18:24:21', '2020-01-08 18:24:21', '0');
 
 -- ----------------------------
 -- Table structure for package_info

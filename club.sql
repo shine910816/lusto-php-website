@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-08 18:33:14
+Date: 2020-01-09 01:01:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -112,7 +112,9 @@ CREATE TABLE `custom_package_info` (
 -- Records of custom_package_info
 -- ----------------------------
 INSERT INTO `custom_package_info` VALUES ('1', '1', '1001', '798.00', '0', '59', '59', '0000-00-00 00:00:00', '13.53', '100', '2020-01-08 18:23:07', '2020-01-08 18:23:07', '0');
+INSERT INTO `custom_package_info` VALUES ('1', '2', '1002', '498.00', '0', '32', '32', '0000-00-00 00:00:00', '15.56', '100', '2020-01-08 18:23:07', '2020-01-08 18:23:07', '0');
 INSERT INTO `custom_package_info` VALUES ('2', '1', '3001', '998.00', '1', '0', '0', '2021-01-07 23:59:59', '0.00', '100', '2020-01-08 18:24:21', '2020-01-08 18:24:21', '0');
+INSERT INTO `custom_package_info` VALUES ('2', '2', '3001', '998.00', '1', '0', '0', '2022-01-07 23:59:59', '0.00', '100', '2020-01-08 18:24:21', '2020-01-08 18:24:21', '0');
 
 -- ----------------------------
 -- Table structure for package_info

@@ -357,6 +357,18 @@ class Utility
         return $result;
     }
 
+    public static function getDateWeek($date_str)
+    {
+        $date_ts = strtotime($date_str);
+        $year = date("Y", $date_ts);
+        $month = date("n", $date_ts);
+        $week = date("W", $date_ts);
+        if ($week == "01" && $month == "12") {
+            $year++;
+        }
+        return $year . $week;
+    }
+
     public static function getContentTypeList()
     {
         return array(

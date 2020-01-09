@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-09 01:01:02
+Date: 2020-01-09 18:32:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,13 +54,11 @@ CREATE TABLE `custom_change_history` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_change_history
 -- ----------------------------
-INSERT INTO `custom_change_history` VALUES ('1', '1', '3', '', '津HLR865', '100', '2020-01-08 18:23:41', '2020-01-08 18:23:41', '0');
-INSERT INTO `custom_change_history` VALUES ('2', '2', '4', '大哥', '张鹤鹏', '100', '2020-01-08 18:25:33', '2020-01-08 18:25:33', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -79,13 +77,12 @@ CREATE TABLE `custom_info` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
-INSERT INTO `custom_info` VALUES ('1', '13622082200', '12', 'HLR865', '李然', '1', '10001000001', '0', '2020-01-08 18:23:07', '2020-01-08 18:23:41', '0');
-INSERT INTO `custom_info` VALUES ('2', '15750293735', '12', 'ADC416', '张鹤鹏', '2', '10001000002', '1', '2020-01-08 18:24:21', '2020-01-08 18:25:32', '0');
+INSERT INTO `custom_info` VALUES ('1', '15750293735', '12', 'E35416', '张鹤鹏', '2', '10001000001', '0', '2020-01-09 18:31:32', '2020-01-09 18:31:32', '0');
 
 -- ----------------------------
 -- Table structure for custom_package_info
@@ -102,6 +99,10 @@ CREATE TABLE `custom_package_info` (
   `card_expire` datetime NOT NULL,
   `card_predict_amount` float(11,2) NOT NULL,
   `operator_id` int(11) NOT NULL,
+  `create_y` int(4) NOT NULL,
+  `create_m` int(6) NOT NULL,
+  `create_w` int(6) NOT NULL,
+  `create_d` int(8) NOT NULL,
   `insert_date` datetime NOT NULL,
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
@@ -111,10 +112,7 @@ CREATE TABLE `custom_package_info` (
 -- ----------------------------
 -- Records of custom_package_info
 -- ----------------------------
-INSERT INTO `custom_package_info` VALUES ('1', '1', '1001', '798.00', '0', '59', '59', '0000-00-00 00:00:00', '13.53', '100', '2020-01-08 18:23:07', '2020-01-08 18:23:07', '0');
-INSERT INTO `custom_package_info` VALUES ('1', '2', '1002', '498.00', '0', '32', '32', '0000-00-00 00:00:00', '15.56', '100', '2020-01-08 18:23:07', '2020-01-08 18:23:07', '0');
-INSERT INTO `custom_package_info` VALUES ('2', '1', '3001', '998.00', '1', '0', '0', '2021-01-07 23:59:59', '0.00', '100', '2020-01-08 18:24:21', '2020-01-08 18:24:21', '0');
-INSERT INTO `custom_package_info` VALUES ('2', '2', '3001', '998.00', '1', '0', '0', '2022-01-07 23:59:59', '0.00', '100', '2020-01-08 18:24:21', '2020-01-08 18:24:21', '0');
+INSERT INTO `custom_package_info` VALUES ('1', '1', '2001', '798.00', '0', '46', '46', '0000-00-00 00:00:00', '17.34', '100', '2020', '202001', '202002', '20200109', '2020-01-09 18:31:32', '2020-01-09 18:31:32', '0');
 
 -- ----------------------------
 -- Table structure for package_info

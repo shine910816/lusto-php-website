@@ -21,6 +21,5 @@ $controller = Controller::getInstance();
 $user = User::getInstance();
 $request = Request::getInstance();
 $launcher = Launcher::getInstance();
-//$launcher->start($controller, $user, $request);
-echo date("YW", strtotime("2020-12-25"));
+$launcher->start($controller, $user, $request);
 ?>

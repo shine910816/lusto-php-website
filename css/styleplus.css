@@ -83,6 +83,9 @@
 .disp_table tbody tr td {
   text-align:center;
 }
+.fall_table tbody tr th {
+  width:30%;
+}
 .no_disp {
   display:none!important;
 }

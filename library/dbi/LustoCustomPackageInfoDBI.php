@@ -8,11 +8,11 @@
 class LustoCustomPackageInfoDBI
 {
 
-    public static function selectCardPackage($custom_id, $card_order_id)
+    public static function selectCardPackage($custom_id, $card_usable_infinity_flg)
     {
         $dbi = Database::getInstance();
-        $where = "del_flg = 0 AND custom_id = " . $custom_id . " AND card_order_id = " . $card_order_id;
-        $sql = "SELECT * FROM custom_package_info WHERE " . $where . " LIMIT 1";
+        $where = "del_flg = 0 AND custom_id = " . $custom_id . " AND card_usable_infinity_flg = " . $card_usable_infinity_flg;
+        $sql = "SELECT * FROM custom_package_info WHERE " . $where . " ORDER BY card_order_id ASC";
         $result = $dbi->query($sql);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);
@@ -20,14 +20,10 @@ class LustoCustomPackageInfoDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
+            $data[$row["card_order_id"]] = $row;
         }
         $result->free();
-        if (count($data)) {
-            return $data[0];
-        } else {
-            return array();
-        }
+        return $data;
     }
 
     public static function selectTimesCardTotal($custom_id)

@@ -129,19 +129,36 @@ class LustoCustom_InputAction extends ActionBase
         $vehicle_type_list = $request->getAttribute("vehicle_type_list");
         $plate_region_list = $request->getAttribute("plate_region_list");
         $custom_card_info = $request->getParameter("custom_info");
+        $current_custom_info = array();
+        if ($edit_mode) {
+            $custom_id = $request->getAttribute("custom_id");
+            $current_custom_info = LustoCustomInfoDBI::selectCustom($custom_id);
+            if ($controller->isError($current_custom_info)) {
+                $current_custom_info->setPos(__FILE__, __LINE__);
+                return $current_custom_info;
+            }
+            if (!isset($current_custom_info[$custom_id])) {
+                $err = $controller->raiseError();
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $current_custom_info = $current_custom_info[$custom_id];
+        }
         if (!LustoCustomValidate::checkCustomName($custom_card_info["custom_name"])) {
             $request->setError("custom_name", "会员名有误");
         }
-        if (!LustoCustomValidate::checkCardId($custom_card_info["card_id"])) {
-            $request->setError("card_id", "会员卡号有误");
-        }
-        $card_id_count = LustoCustomInfoDBI::selectCardIdCount($custom_card_info["card_id"]);
-        if ($controller->isError($card_id_count)) {
-            $card_id_count->setPos(__FILE__, __LINE__);
-            return $card_id_count;
-        }
-        if (!$edit_mode && $card_id_count) {
-            $request->setError("card_id", "会员卡号已被绑定");
+        if (!$edit_mode || ($edit_mode && $current_custom_info["card_id"] != $custom_card_info["card_id"])) {
+            if (!LustoCustomValidate::checkCardId($custom_card_info["card_id"])) {
+                $request->setError("card_id", "会员卡号有误");
+            }
+            $card_id_count = LustoCustomInfoDBI::selectCardIdCount($custom_card_info["card_id"]);
+            if ($controller->isError($card_id_count)) {
+                $card_id_count->setPos(__FILE__, __LINE__);
+                return $card_id_count;
+            }
+            if ($card_id_count) {
+                $request->setError("card_id", "会员卡号已被绑定");
+            }
         }
         if (!LustoCustomValidate::checkCustomMobile($custom_card_info["custom_mobile"])) {
             $request->setError("custom_mobile", "手机号码有误");
@@ -164,6 +181,7 @@ class LustoCustom_InputAction extends ActionBase
             $custom_card_info["card_package"] = $package_info[$custom_card_info["custom_vehicle_type"]];
         }
         $request->setAttribute("custom_card_info", $custom_card_info);
+        $request->setAttribute("current_custom_info", $current_custom_info);
         return VIEW_DONE;
     }
 
@@ -180,20 +198,9 @@ class LustoCustom_InputAction extends ActionBase
         $custom_id = "0";
         $operator_id = $user->getCustomId();
         $dbi = Database::getInstance();
-//Utility::testVariable($request->getAttributes());
         if ($edit_mode) {
             $custom_id = $request->getAttribute("custom_id");
-            $current_custom_info = LustoCustomInfoDBI::selectCustom($custom_id);
-            if ($controller->isError($current_custom_info)) {
-                $current_custom_info->setPos(__FILE__, __LINE__);
-                return $current_custom_info;
-            }
-            if (!isset($current_custom_info[$custom_id])) {
-                $err = $controller->raiseError();
-                $err->setPos(__FILE__, __LINE__);
-                return $err;
-            }
-            $current_custom_info = $current_custom_info[$custom_id];
+            $current_custom_info = $request->getAttribute("current_custom_info");
             $custom_update = array();
             $history_insert = array();
             if ($custom_card_info["card_id"] != $current_custom_info["card_id"]) {

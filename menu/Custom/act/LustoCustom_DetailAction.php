@@ -49,12 +49,58 @@ class LustoCustom_DetailAction extends ActionBase
         }
         $request->setAttribute("custom_id", $custom_id);
         $request->setAttribute("custom_info", $custom_info[$custom_id]);
+        $request->setAttribute("vehicle_type_list", LustoCustomEntity::getVehicleTypeList());
+        $request->setAttribute("plate_region_list", LustoCustomEntity::getPlateRegionList());
         return VIEW_DONE;
     }
 
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
-//Utility::testVariable($request->getAttributes());
+        $custom_id = $request->getAttribute("custom_id");
+        $custom_info = $request->getAttribute("custom_info");
+        $card_infinity_flg = $custom_info["card_usable_infinity_flg"];
+        $surplus_text = "";
+        if ($card_infinity_flg) {
+            $card_expire = LustoCustomPackageInfoDBI::selectCurrentYearCardExpire($custom_id);
+            if ($controller->isError($card_expire)) {
+                $card_expire->setPos(__FILE__, __LINE__);
+                return $card_expire;
+            }
+            if ($card_expire === false) {
+                $err = $controller->raiseError(ERROR_CODE_DATABASE_DISACCEPT);
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $card_expire_ts = strtotime($card_expire);
+            $surplus_text = date("Y", $card_expire_ts) . "年" . date("n", $card_expire_ts) . "月" . date("j", $card_expire_ts) . "日";
+        } else {
+            $card_times = LustoCustomPackageInfoDBI::selectTimesCardTotal($custom_id);
+            if ($controller->isError($card_times)) {
+                $card_times->setPos(__FILE__, __LINE__);
+                return $card_times;
+            }
+            if ($card_times === false) {
+                $err = $controller->raiseError(ERROR_CODE_DATABASE_DISACCEPT);
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $surplus_text = $card_times . "次";
+        }
+        $invest_info = LustoCustomPackageInfoDBI::selectCardPackage($custom_id, $card_infinity_flg);
+        if ($controller->isError($invest_info)) {
+            $invest_info->setPos(__FILE__, __LINE__);
+            return $invest_info;
+        }
+        $change_history = LustoCustomChangeHistoryDBI::searchCustomChangeHistory($custom_id);
+        if ($controller->isError($change_history)) {
+            $change_history->setPos(__FILE__, __LINE__);
+            return $change_history;
+        }
+        $request->setAttribute("surplus_text", $surplus_text);
+        $request->setAttribute("invest_info", $invest_info);
+        $request->setAttribute("change_history", $change_history);
+        $request->setAttribute("change_type_list", LustoCustomChangeHistoryEntity::getChangeTypeList());
+//Utility::testVariable($custom_info);
         return VIEW_DONE;
     }
 }

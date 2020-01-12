@@ -17,7 +17,8 @@ class LustoCustomInfoDBI
                " custom_plate_region," .
                " custom_plate," .
                " custom_name," .
-               " custom_vehicle_type" .
+               " custom_vehicle_type," .
+               " card_usable_infinity_flg" .
                " FROM custom_info" .
                " WHERE del_flg = 0";
         if ($type == "2") {

@@ -22,6 +22,7 @@ class Config
         $result["custom"]["search"] = SYSTEM_AUTH_LOGIN;
         $result["custom"]["input"] = SYSTEM_AUTH_LOGIN;
         $result["custom"]["detail"] = SYSTEM_AUTH_LOGIN;
+        $result["custom"]["invest"] = SYSTEM_AUTH_LOGIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -41,6 +42,7 @@ class Config
         $result["custom"]["search"] = array("会员管理");
         $result["custom"]["input"] = array('<a href="./?menu=custom&act=search" data-ajax="false">会员管理</a>', "");
         $result["custom"]["detail"] = array('<a href="./?menu=custom&act=search" data-ajax="false">会员管理</a>', "会员详细");
+        $result["custom"]["invest"] = array("续费充值");
         return $result;
     }
 

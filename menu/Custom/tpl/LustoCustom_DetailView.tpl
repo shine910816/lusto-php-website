@@ -11,7 +11,7 @@
           <td>{^$custom_info["card_id"]^}</td>
         </tr>
         <tr>
-          <th>姓名</th>
+          <th>会员姓名</th>
           <td>{^$custom_info["custom_name"]^}</td>
         </tr>
         <tr>

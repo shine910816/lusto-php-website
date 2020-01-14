@@ -194,7 +194,6 @@ class LustoCustom_InvestAction extends ActionBase
             return $insert_res;
         }
         $controller->redirect("?menu=custom&act=detail&custom_id=" . $custom_id);
-//Utility::testVariable($insert_data);
         return VIEW_NONE;
     }
 }

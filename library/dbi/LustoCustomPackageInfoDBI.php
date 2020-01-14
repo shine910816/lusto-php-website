@@ -8,7 +8,7 @@
 class LustoCustomPackageInfoDBI
 {
 
-    public static function selectCardPackage($custom_id, $card_usable_infinity_flg)
+    public static function selectCardPackage($custom_id, $card_usable_infinity_flg = "0")
     {
         $dbi = Database::getInstance();
         $where = "del_flg = 0 AND custom_id = " . $custom_id . " AND card_usable_infinity_flg = " . $card_usable_infinity_flg;
@@ -139,7 +139,7 @@ class LustoCustomPackageInfoDBI
     public static function updateCustomPackage($update_data, $custom_id, $card_order_id)
     {
         $dbi = Database::getInstance();
-        $where = "custom_id = " . $custom_id . " WHERE card_order_id = " . $card_order_id;
+        $where = "custom_id = " . $custom_id . " AND card_order_id = " . $card_order_id;
         $result = $dbi->update("custom_package_info", $update_data, $where);
         if ($dbi->isError($result)) {
             $result->setPos(__FILE__, __LINE__);

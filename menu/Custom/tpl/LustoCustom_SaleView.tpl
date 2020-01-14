@@ -3,7 +3,7 @@
 $(document).ready(function(){
     $("#search_card_id").select();
     $("#search_card_id").keyup(function(){
-        var ajax_url = "./?menu=custom&act=invest&get_data=" + $(this).val();
+        var ajax_url = "./?menu=custom&act=sale&get_data=" + $(this).val();
         $.get(ajax_url, function(data){
             var json = eval("(" + data + ")");
             if (json.error == "1") {
@@ -11,8 +11,10 @@ $(document).ready(function(){
                     $("#custom_info_form").addClass("no_disp");
                 }
                 $("input[name='custom_id']").val("");
-                $("td.custom_info_td").empty();
-                $("#package_list").empty();
+                $(".custom_info_td").empty();
+                if (!$("button[name='do_sale']").hasClass("no_disp")) {
+                    $("button[name='do_sale']").addClass("no_disp");
+                }
             } else {
                 $("input[name='custom_id']").val(json.result.custom_id);
                 $("td#card_type").html(json.result.card_type);
@@ -20,12 +22,17 @@ $(document).ready(function(){
                 $("td#custom_name").html(json.result.custom_name);
                 $("td#custom_plate").html(json.result.custom_plate);
                 $("td#custom_vehicle_type").html(json.result.custom_vehicle_type);
-                var package_context = "";
-                $.each(json.result.list, function(idx, val) {
-                    package_context += '<option value="' + idx + '">' + val + '</option>';
-                });
-                $("#package_list").html(package_context);
-                $("#package_list").selectmenu("refresh");
+                $("th#surplus_key").html(json.result.surplus_key);
+                $("td#surplus_value").html(json.result.surplus_value);
+                if (json.result.card_usable == "1") {
+                    if ($("button[name='do_sale']").hasClass("no_disp")) {
+                        $("button[name='do_sale']").removeClass("no_disp");
+                    }
+                } else {
+                    if (!$("button[name='do_sale']").hasClass("no_disp")) {
+                        $("button[name='do_sale']").addClass("no_disp");
+                    }
+                }
                 if ($("#custom_info_form").hasClass("no_disp")) {
                     $("#custom_info_form").removeClass("no_disp");
                 }
@@ -36,7 +43,7 @@ $(document).ready(function(){
 </script>
 <div class="ui-corner-all custom-corners">
   <div class="ui-bar ui-bar-a ta_c">
-    <h1>续费充值</h1>
+    <h1>洗车消费</h1>
   </div>
   <div class="ui-body ui-body-a">
     <div class="ui-field-contain">
@@ -45,7 +52,7 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
-<form action="./" method="get" data-ajax="false" id="custom_info_form" class="no_disp">
+<form action="./" method="post" data-ajax="false" id="custom_info_form" class="no_disp">
 <input type="hidden" name="menu" value="{^$current_menu^}" />
 <input type="hidden" name="act" value="{^$current_act^}" />
 <input type="hidden" name="custom_id" value="" />
@@ -77,20 +84,13 @@ $(document).ready(function(){
           <th>车型</th>
           <td class="custom_info_td" id="custom_vehicle_type"></td>
         </tr>
+        <tr>
+          <th class="custom_info_td" id="surplus_key"></th>
+          <td class="custom_info_td" id="surplus_value"></td>
+        </tr>
       </tbody>
     </table>
-  </div>
-</div>
-<h1></h1>
-<div class="ui-corner-all custom-corners">
-  <div class="ui-bar ui-bar-a ta_c">
-    <h1>套餐选择</h1>
-  </div>
-  <div class="ui-body ui-body-a">
-    <fieldset class="ui-grid-a">
-      <div class="ui-block-a"><select name="package_id" id="package_list"></select></div>
-      <div class="ui-block-b"><button name="do_invest" value="1" class="ui-shadow ui-btn ui-corner-all ui-btn-b">充值</button></div>
-    </fieldset>
+    <button name="do_sale" value="1" class="ui-shadow ui-btn ui-corner-all ui-btn-b no_disp">洗车结算</button>
   </div>
 </div>
 </form>

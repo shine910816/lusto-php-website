@@ -20,7 +20,7 @@ class LustoCustom_SaleAction extends ActionBase
             echo json_encode($result);
             $ret = VIEW_NONE;
         } elseif ($request->hasParameter("do_sale")) {
-            $ret = $this->_doInvestExecute($controller, $user, $request);
+            $ret = $this->_doSaleExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
                 $ret->setPos(__FILE__, __LINE__);
                 return $ret;
@@ -89,31 +89,49 @@ class LustoCustom_SaleAction extends ActionBase
         $result["result"]["custom_plate"] = $custom_plate;
         $vehicle_list = LustoCustomEntity::getVehicleTypeList();
         $result["result"]["custom_vehicle_type"] = $vehicle_list[$custom_info["custom_vehicle_type"]];
-        $package_list = array();
-        $usable_package_list = LustoPackageInfoDBI::selectUsablePackageList();
-        if ($controller->isError($usable_package_list)) {
-            $usable_package_list->setPos(__FILE__, __LINE__);
-            $result["error"] = "1";
-            $result["err_msg"] = "数据库异常";
-        }
-        foreach ($usable_package_list[$custom_info["custom_vehicle_type"]] as $package_id => $package_item) {
-            if ($custom_info["card_usable_infinity_flg"]) {
-                if ($package_item["p_infinity_flg"]) {
-                    $package_name = sprintf("%d", $package_item["p_price"]) . "元/无限次";
-                    if ($package_item["p_special_flg"]) {
-                        $package_name .= "(优惠活动)";
-                    }
-                    $package_list[$package_id] = $package_name;
-                }
-            } else {
-                if (!$package_item["p_infinity_flg"]) {
-                    $package_name = sprintf("%d", $package_item["p_price"]) . "元/";
-                    $package_name .= $package_item["p_times"] . "次";
-                    $package_list[$package_id] = $package_name;
-                }
+        $card_infinity_flg = $custom_info["card_usable_infinity_flg"];
+        $surplus_column_name = "";
+        $surplus_text = "";
+        $usable_flg = "0";
+        if ($custom_info["card_usable_infinity_flg"]) {
+            $surplus_column_name = "有效期限";
+            $card_expire = LustoCustomPackageInfoDBI::selectCurrentYearCardExpire($custom_id);
+            if ($controller->isError($card_expire)) {
+                $result["error"] = "1";
+                $result["err_msg"] = "数据库异常";
+                return $result;
             }
+            if ($card_expire === false) {
+                $result["error"] = "1";
+                $result["err_msg"] = "数据库异常";
+                return $result;
+            }
+            $card_expire_ts = strtotime($card_expire);
+            if ($card_expire_ts > time()) {
+                $usable_flg = "1";
+            }
+            $surplus_text = date("Y", $card_expire_ts) . "年" . date("n", $card_expire_ts) . "月" . date("j", $card_expire_ts) . "日";
+        } else {
+            $surplus_column_name = "剩余次数";
+            $card_times = LustoCustomPackageInfoDBI::selectTimesCardTotal($custom_id);
+            if ($controller->isError($card_times)) {
+                $result["error"] = "1";
+                $result["err_msg"] = "数据库异常";
+                return $result;
+            }
+            if ($card_times === false) {
+                $result["error"] = "1";
+                $result["err_msg"] = "数据库异常";
+                return $result;
+            }
+            if ($card_times > 0) {
+                $usable_flg = "1";
+            }
+            $surplus_text = $card_times . "次";
         }
-        $result["result"]["list"] = $package_list;
+        $result["result"]["surplus_key"] = $surplus_column_name;
+        $result["result"]["surplus_value"] = $surplus_text;
+        $result["result"]["card_usable"] = $usable_flg;
         return $result;
     }
 
@@ -124,13 +142,7 @@ class LustoCustom_SaleAction extends ActionBase
             $err->setPos(__FILE__, __LINE__);
             return $err;
         }
-        if (!$request->hasParameter("package_id")) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
         $custom_id = $request->getParameter("custom_id");
-        $package_id = $request->getParameter("package_id");
         $custom_info = LustoCustomInfoDBI::selectCustom($custom_id);
         if ($controller->isError($custom_info)) {
             $custom_info->setPos(__FILE__, __LINE__);
@@ -142,59 +154,101 @@ class LustoCustom_SaleAction extends ActionBase
             return $err;
         }
         $custom_info = $custom_info[$custom_id];
-        $package_info = LustoPackageInfoDBI::selectPackage($package_id);
-        if ($controller->isError($package_info)) {
-            $package_info->setPos(__FILE__, __LINE__);
-            return $package_info;
-        }
-        if (!isset($package_info[$package_id])) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $package_info = $package_info[$package_id];
-        if ($package_info["p_infinity_flg"] != $custom_info["card_usable_infinity_flg"] ||
-            ($package_info["p_vehicle_type"] && $package_info["p_vehicle_type"] != $custom_info["custom_vehicle_type"])) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $card_count = LustoCustomPackageInfoDBI::selectCardCount($custom_id);
-        if ($controller->isError($card_count)) {
-            $card_count->setPos(__FILE__, __LINE__);
-            return $card_count;
-        }
-        if ($card_count === false) {
-            $err = $controller->raiseError();
-            $err->setPos(__FILE__, __LINE__);
-            return $err;
-        }
-        $insert_data = array();
-        $insert_data["custom_id"] = $custom_id;
-        $insert_data["card_order_id"] = $card_count + 1;
-        $insert_data["card_package"] = $package_id;
-        $insert_data["card_price"] = $package_info["p_price"];
-        $insert_data["card_usable_infinity_flg"] = $package_info["p_infinity_flg"];
-        $insert_data["card_usable_count"] = $package_info["p_times"];
-        $insert_data["card_current_count"] = $package_info["p_times"];
-        if ($package_info["p_infinity_flg"]) {
-            $insert_data["card_expire"] = date("Y-m-d H:i:s", mktime(0, 0, -1, date("m"), date("d"), date("Y") + 1));
+        $usable_flg = false;
+        if ($custom_info["card_usable_infinity_flg"]) {
+            $card_expire = LustoCustomPackageInfoDBI::selectCurrentYearCardExpire($custom_id);
+            if ($controller->isError($card_expire)) {
+                $card_expire->setPos(__FILE__, __LINE__);
+                return $card_expire;
+            }
+            if ($card_expire === false) {
+                $err = $controller->raiseError();
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            $card_expire_ts = strtotime($card_expire);
+            if ($card_expire_ts > time()) {
+                $usable_flg = true;
+            }
         } else {
-            $insert_data["card_expire"] = "0000-00-00 00:00:00";
+            $card_times = LustoCustomPackageInfoDBI::selectTimesCardTotal($custom_id);
+            if ($controller->isError($card_times)) {
+                $card_times->setPos(__FILE__, __LINE__);
+                return $card_times;
+            }
+            if ($card_times === false) {
+                $err = $controller->raiseError();
+                $err->setPos(__FILE__, __LINE__);
+                return $err;
+            }
+            if ($card_times > 0) {
+                $usable_flg = true;
+            }
         }
-        $insert_data["card_predict_amount"] = $package_info["p_predict_price"];
-        $insert_data["operator_id"] = $user->getCustomId();
-        $insert_data["create_y"] = date("Y");
-        $insert_data["create_m"] = date("Ym");
-        $insert_data["create_w"] = Utility::getDateWeek(date("Y-m-d H:i:s"));
-        $insert_data["create_d"] = date("Ymd");
-        $insert_res = LustoCustomPackageInfoDBI::insertCustomPackage($insert_data);
+        if (!$usable_flg) {
+            $err = $controller->raiseError();
+            $err->setPos(__FILE__, __LINE__);
+            return $err;
+        }
+        $insert_data = array(
+            "custom_id" => $custom_id,
+            "card_usable_infinity_flg" => $custom_info["card_usable_infinity_flg"],
+            "operator_id" => $user->getCustomId(),
+            "create_y" => date("Y"),
+            "create_m" => date("Ym"),
+            "create_w" => Utility::getDateWeek(date("Y-m-d H:i:s")),
+            "create_d" => date("Ymd")
+        );
+        $update_data = array();
+        $update_card_order_id = "0";
+        if (!$custom_info["card_usable_infinity_flg"]) {
+            $card_package_list = LustoCustomPackageInfoDBI::selectCardPackage($custom_id);
+            if ($controller->isError($card_package_list)) {
+                $dbi->rollback();
+                $card_package_list->setPos(__FILE__, __LINE__);
+                return $card_package_list;
+            }
+            foreach ($card_package_list as $card_order_id => $card_info) {
+                if ($card_info["card_current_count"] > 0) {
+                    $update_data["card_current_count"] = $card_info["card_current_count"] - 1;
+                    $update_card_order_id = $card_order_id;
+                    $insert_data["card_predict_amount"] = $card_info["card_predict_amount"];
+                    break;
+                } else {
+                    continue;
+                }
+            }
+        } else {
+            $insert_data["card_predict_amount"] = "0";
+        }
+        $dbi = Database::getInstance();
+        $begin_res = $dbi->begin();
+        if ($controller->isError($begin_res)) {
+            $dbi->rollback();
+            $begin_res->setPos(__FILE__, __LINE__);
+            return $begin_res;
+        }
+        if (!empty($update_data)) {
+            $update_res = LustoCustomPackageInfoDBI::updateCustomPackage($update_data, $custom_id, $update_card_order_id);
+            if ($controller->isError($update_res)) {
+                $dbi->rollback();
+                $update_res->setPos(__FILE__, __LINE__);
+                return $update_res;
+            }
+        }
+        $insert_res = LustoCustomSaleHistoryDBI::insertCustomSaleHistory($insert_data);
         if ($controller->isError($insert_res)) {
+            $dbi->rollback();
             $insert_res->setPos(__FILE__, __LINE__);
             return $insert_res;
         }
+        $commit_res = $dbi->commit();
+        if ($controller->isError($commit_res)) {
+            $dbi->rollback();
+            $commit_res->setPos(__FILE__, __LINE__);
+            return $commit_res;
+        }
         $controller->redirect("?menu=custom&act=detail&custom_id=" . $custom_id);
-//Utility::testVariable($insert_data);
         return VIEW_NONE;
     }
 }

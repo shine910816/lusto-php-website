@@ -3,9 +3,9 @@
 /**
  * 会员管理画面
  * @author Kinsama
- * @version 2020-01-02
+ * @version 2020-01-14
  */
-class LustoCustom_InvestAction extends ActionBase
+class LustoCustom_SaleAction extends ActionBase
 {
     /**
      * 执行主程序
@@ -19,7 +19,7 @@ class LustoCustom_InvestAction extends ActionBase
             $result = $this->_doDataExecute($controller, $user, $request);
             echo json_encode($result);
             $ret = VIEW_NONE;
-        } elseif ($request->hasParameter("do_invest")) {
+        } elseif ($request->hasParameter("do_sale")) {
             $ret = $this->_doInvestExecute($controller, $user, $request);
             if ($controller->isError($ret)) {
                 $ret->setPos(__FILE__, __LINE__);
@@ -117,7 +117,7 @@ class LustoCustom_InvestAction extends ActionBase
         return $result;
     }
 
-    private function _doInvestExecute(Controller $controller, User $user, Request $request)
+    private function _doSaleExecute(Controller $controller, User $user, Request $request)
     {
         if (!$request->hasParameter("custom_id")) {
             $err = $controller->raiseError();

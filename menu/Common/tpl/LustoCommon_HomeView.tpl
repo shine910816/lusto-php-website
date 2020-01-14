@@ -7,7 +7,7 @@
 }
 </style>
 <div class="ui-grid-b">
-  <div class="ui-block-a"><a class="ui-shadow ui-btn ui-corner-all high_button" href="#" data-ajax="false">洗车消费</a></div>
+  <div class="ui-block-a"><a class="ui-shadow ui-btn ui-corner-all high_button" href="./?menu=custom&act=sale" data-ajax="false">洗车消费</a></div>
   <div class="ui-block-b"><a class="ui-shadow ui-btn ui-corner-all high_button" href="./?menu=custom&act=invest" data-ajax="false">续费充值</a></div>
   <div class="ui-block-c"><a class="ui-shadow ui-btn ui-corner-all high_button" href="./?menu=custom&act=search" data-ajax="false">会员管理</a></div>
 {^if $user_admin_flg^}

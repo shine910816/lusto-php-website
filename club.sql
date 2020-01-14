@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2020-01-09 23:39:39
+Date: 2020-01-14 18:27:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -54,7 +54,7 @@ CREATE TABLE `custom_change_history` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`history_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_change_history
@@ -64,6 +64,8 @@ INSERT INTO `custom_change_history` VALUES ('2', '1', '3', '津E35416', '津ADC4
 INSERT INTO `custom_change_history` VALUES ('3', '2', '4', '死胖子', '李然', '100', '2020-01-09 23:16:54', '2020-01-09 23:16:54', '0');
 INSERT INTO `custom_change_history` VALUES ('4', '2', '2', '', '13622082200', '100', '2020-01-09 23:34:28', '2020-01-09 23:34:28', '0');
 INSERT INTO `custom_change_history` VALUES ('5', '2', '3', '', '津HLR865', '100', '2020-01-09 23:34:29', '2020-01-09 23:34:29', '0');
+INSERT INTO `custom_change_history` VALUES ('6', '3', '2', '', '13654399984', '100', '2020-01-14 18:09:30', '2020-01-14 18:09:30', '0');
+INSERT INTO `custom_change_history` VALUES ('7', '3', '3', '', '冀JZC842', '100', '2020-01-14 18:09:30', '2020-01-14 18:09:30', '0');
 
 -- ----------------------------
 -- Table structure for custom_info
@@ -82,13 +84,14 @@ CREATE TABLE `custom_info` (
   `update_date` datetime NOT NULL,
   `del_flg` tinyint(4) NOT NULL,
   PRIMARY KEY (`custom_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of custom_info
 -- ----------------------------
 INSERT INTO `custom_info` VALUES ('1', '15750293735', '12', 'ADC416', '大哥', '2', '10001000001', '0', '2020-01-09 18:31:32', '2020-01-09 21:54:19', '0');
 INSERT INTO `custom_info` VALUES ('2', '13622082200', '12', 'HLR865', '李然', '1', '10001000002', '1', '2020-01-09 21:11:09', '2020-01-09 23:34:28', '0');
+INSERT INTO `custom_info` VALUES ('3', '13654399984', '13', 'JZC842', '逗逗', '1', '10001000003', '0', '2020-01-14 11:51:07', '2020-01-14 18:09:29', '0');
 
 -- ----------------------------
 -- Table structure for custom_package_info
@@ -119,8 +122,36 @@ CREATE TABLE `custom_package_info` (
 -- Records of custom_package_info
 -- ----------------------------
 INSERT INTO `custom_package_info` VALUES ('1', '1', '2001', '798.00', '0', '46', '46', '0000-00-00 00:00:00', '17.34', '100', '2020', '202001', '202002', '20200109', '2020-01-09 18:31:32', '2020-01-09 18:31:32', '0');
+INSERT INTO `custom_package_info` VALUES ('1', '2', '2001', '798.00', '0', '46', '46', '0000-00-00 00:00:00', '17.34', '100', '2020', '202001', '202003', '20200114', '2020-01-14 18:06:28', '2020-01-14 18:06:28', '0');
 INSERT INTO `custom_package_info` VALUES ('2', '1', '4000', '499.00', '1', '0', '0', '2021-01-08 23:59:59', '0.00', '100', '2020', '202001', '202002', '20200109', '2020-01-09 21:11:09', '2020-01-09 21:11:09', '0');
-INSERT INTO `custom_package_info` VALUES ('2', '2', '3001', '998.00', '1', '0', '0', '2022-01-08 23:59:59', '0.00', '100', '2020', '202001', '202002', '20200109', '2020-01-09 21:11:09', '2020-01-09 21:11:09', '0');
+INSERT INTO `custom_package_info` VALUES ('2', '2', '3001', '998.00', '1', '0', '0', '2021-01-13 23:59:59', '0.00', '100', '2020', '202001', '202003', '20200114', '2020-01-14 18:05:19', '2020-01-14 18:05:19', '0');
+INSERT INTO `custom_package_info` VALUES ('3', '1', '1003', '298.00', '0', '17', '17', '0000-00-00 00:00:00', '17.52', '100', '2020', '202001', '202003', '20200114', '2020-01-14 11:51:07', '2020-01-14 11:51:07', '0');
+INSERT INTO `custom_package_info` VALUES ('3', '2', '1002', '498.00', '0', '32', '32', '0000-00-00 00:00:00', '15.56', '100', '2020', '202001', '202003', '20200114', '2020-01-14 18:08:05', '2020-01-14 18:08:05', '0');
+INSERT INTO `custom_package_info` VALUES ('3', '3', '1001', '798.00', '0', '59', '59', '0000-00-00 00:00:00', '13.53', '100', '2020', '202001', '202003', '20200114', '2020-01-14 18:08:13', '2020-01-14 18:08:13', '0');
+
+-- ----------------------------
+-- Table structure for custom_sale_history
+-- ----------------------------
+DROP TABLE IF EXISTS `custom_sale_history`;
+CREATE TABLE `custom_sale_history` (
+  `sale_id` int(11) NOT NULL AUTO_INCREMENT,
+  `custom_id` int(11) NOT NULL,
+  `card_usable_infinity_flg` tinyint(4) NOT NULL,
+  `card_predict_amount` float(11,2) NOT NULL,
+  `operator_id` int(11) NOT NULL,
+  `create_y` int(4) NOT NULL,
+  `create_m` int(6) NOT NULL,
+  `create_w` int(6) NOT NULL,
+  `create_d` int(8) NOT NULL,
+  `insert_date` datetime NOT NULL,
+  `update_date` datetime NOT NULL,
+  `del_flg` tinyint(4) NOT NULL,
+  PRIMARY KEY (`sale_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of custom_sale_history
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for package_info

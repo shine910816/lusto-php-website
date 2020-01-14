@@ -10,9 +10,11 @@ $(document).ready(function(){
                 if (!$("#custom_info_form").hasClass("no_disp")) {
                     $("#custom_info_form").addClass("no_disp");
                 }
+                $("input[name='custom_id']").val("");
                 $("td.custom_info_td").empty();
                 $("#package_list").empty();
             } else {
+                $("input[name='custom_id']").val(json.result.custom_id);
                 $("td#card_type").html(json.result.card_type);
                 $("td#custom_mobile").html(json.result.custom_mobile);
                 $("td#custom_name").html(json.result.custom_name);
@@ -43,7 +45,7 @@ $(document).ready(function(){
     </div>
   </div>
 </div>
-<form action="./" method="get" data-ajax="false" id="custom_info_form" class="no_disp">
+<form action="./" method="post" data-ajax="false" id="custom_info_form" class="no_disp">
 <input type="hidden" name="menu" value="{^$current_menu^}" />
 <input type="hidden" name="act" value="{^$current_act^}" />
 <input type="hidden" name="custom_id" value="" />

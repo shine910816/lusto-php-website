@@ -196,7 +196,7 @@ class LustoCustom_SaleAction extends ActionBase
             "operator_id" => $user->getCustomId(),
             "create_y" => date("Y"),
             "create_m" => date("Ym"),
-            "create_w" => Utility::getDateWeek(date("Y-m-d H:i:s")),
+            "create_w" => date("oW"),
             "create_d" => date("Ymd")
         );
         $update_data = array();

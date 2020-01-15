@@ -289,7 +289,7 @@ class LustoCustom_InputAction extends ActionBase
             $package_insert["operator_id"] = $operator_id;
             $package_insert["create_y"] = date("Y");
             $package_insert["create_m"] = date("Ym");
-            $package_insert["create_w"] = Utility::getDateWeek(date("Y-m-d H:i:s"));
+            $package_insert["create_w"] = date("oW");
             $package_insert["create_d"] = date("Ymd");
             if ($package_info["p_infinity_flg"]) {
                 $package_insert["card_usable_count"] = "0";

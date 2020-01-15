@@ -186,7 +186,7 @@ class LustoCustom_InvestAction extends ActionBase
         $insert_data["operator_id"] = $user->getCustomId();
         $insert_data["create_y"] = date("Y");
         $insert_data["create_m"] = date("Ym");
-        $insert_data["create_w"] = Utility::getDateWeek(date("Y-m-d H:i:s"));
+        $insert_data["create_w"] = date("oW");
         $insert_data["create_d"] = date("Ymd");
         $insert_res = LustoCustomPackageInfoDBI::insertCustomPackage($insert_data);
         if ($controller->isError($insert_res)) {

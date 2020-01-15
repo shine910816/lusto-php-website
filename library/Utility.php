@@ -379,12 +379,16 @@ class Utility
         if (date("L", strtotime($param_year . "-01-01 00:00:00")) == "1") {
             $days_max = 366;
         }
-        $result = array();
+        $result = array(
+            "week" => array(),
+            "day" => array()
+        );
         for ($i = -6; $i <= $days_max + 7; $i++) {
             $current_time = mktime(0, 0, 0, 1, $i, $param_year);
             $column_key = date("oW", $current_time);
             $column_value = date("Ymd", $current_time);
-            $result[$column_key][] = $column_value;
+            $result["week"][$column_key][] = $column_value;
+            $result["day"][$column_value] = $column_key;
         }
         return $result;
     }

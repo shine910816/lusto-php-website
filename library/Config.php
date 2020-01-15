@@ -24,6 +24,10 @@ class Config
         $result["custom"]["detail"] = SYSTEM_AUTH_LOGIN;
         $result["custom"]["invest"] = SYSTEM_AUTH_LOGIN;
         $result["custom"]["sale"] = SYSTEM_AUTH_LOGIN;
+        $result["statistics"]["daily_report"] = SYSTEM_AUTH_ADMIN;
+        $result["statistics"]["weekly_report"] = SYSTEM_AUTH_ADMIN;
+        $result["statistics"]["monthly_report"] = SYSTEM_AUTH_ADMIN;
+        $result["statistics"]["yearly_report"] = SYSTEM_AUTH_ADMIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -45,6 +49,7 @@ class Config
         $result["custom"]["detail"] = array('<a href="./?menu=custom&act=search" data-ajax="false">会员管理</a>', "会员详细");
         $result["custom"]["invest"] = array("续费充值");
         $result["custom"]["sale"] = array("洗车消费");
+        $result["statistics"]["daily_report"] = array("账目管理");
         return $result;
     }
 

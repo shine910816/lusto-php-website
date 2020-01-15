@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 会员详细画面
  * @author Kinsama
@@ -86,6 +87,11 @@ class LustoCustom_DetailAction extends ActionBase
             }
             $surplus_text = $card_times . "次";
         }
+        $sale_info = LustoCustomSaleHistoryDBI::selectSaleHistory($custom_id);
+        if ($controller->isError($sale_info)) {
+            $sale_info->setPos(__FILE__, __LINE__);
+            return $sale_info;
+        }
         $invest_info = LustoCustomPackageInfoDBI::selectCardPackage($custom_id, $card_infinity_flg);
         if ($controller->isError($invest_info)) {
             $invest_info->setPos(__FILE__, __LINE__);
@@ -96,11 +102,17 @@ class LustoCustom_DetailAction extends ActionBase
             $change_history->setPos(__FILE__, __LINE__);
             return $change_history;
         }
+        $admin_name_list = LustoAdminInfoDBI::selectAdminNameList();
+        if ($controller->isError($admin_name_list)) {
+            $admin_name_list->setPos(__FILE__, __LINE__);
+            return $admin_name_list;
+        }
         $request->setAttribute("surplus_text", $surplus_text);
+        $request->setAttribute("sale_info", $sale_info);
         $request->setAttribute("invest_info", $invest_info);
         $request->setAttribute("change_history", $change_history);
+        $request->setAttribute("admin_name_list", $admin_name_list);
         $request->setAttribute("change_type_list", LustoCustomChangeHistoryEntity::getChangeTypeList());
-//Utility::testVariable($custom_info);
         return VIEW_DONE;
     }
 }

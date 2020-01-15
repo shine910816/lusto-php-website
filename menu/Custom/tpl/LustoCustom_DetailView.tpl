@@ -51,6 +51,34 @@
     </table>
   </div>
 </div>
+{^if !empty($sale_info)^}
+<h1></h1>
+<div class="ui-corner-all custom-corners">
+  <div class="ui-bar ui-bar-a ta_c">
+    <h1>消费记录</h1>
+  </div>
+  <div class="ui-body ui-body-a">
+    <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
+      <thead>
+        <tr>
+          <th>日期</th>
+          <th>预估消费额</th>
+          <th>操作人</th>
+        </tr>
+      </thead>
+      <tbody>
+{^foreach from=$sale_info item=sale_item^}
+        <tr>
+          <td>{^$sale_item["insert_date"]|date_format:"%Y-%m-%d"^}</td>
+          <td>{^$sale_item["card_predict_amount"]^}元</td>
+          <td>{^if isset($admin_name_list[$sale_item["operator_id"]])^}{^$admin_name_list[$sale_item["operator_id"]]^}{^/if^}</td>
+        </tr>
+{^/foreach^}
+      </tbody>
+    </table>
+  </div>
+</div>
+{^/if^}
 <h1></h1>
 <div class="ui-corner-all custom-corners">
   <div class="ui-bar ui-bar-a ta_c">
@@ -60,19 +88,21 @@
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th>类型</th>
           <th>日期</th>
+          <th>类型</th>
           <th>金额</th>
           <th>{^if $custom_info["card_usable_infinity_flg"]^}有效期{^else^}次数{^/if^}</th>
+          <th>操作人</th>
         </tr>
       </thead>
       <tbody>
 {^foreach from=$invest_info item=invest_item^}
         <tr>
-          <td>{^if $invest_item["card_order_id"] eq "1"^}开卡{^else^}充值{^/if^}</td>
           <td>{^$invest_item["insert_date"]|date_format:"%Y-%m-%d"^}</td>
-          <td>{^$invest_item["card_price"]^}</td>
+          <td>{^if $invest_item["card_order_id"] eq "1"^}开卡{^else^}充值{^/if^}</td>
+          <td>{^$invest_item["card_price"]^}元</td>
           <td>{^if $custom_info["card_usable_infinity_flg"]^}{^$invest_item["card_expire"]|date_format:"%Y-%m-%d"^}{^else^}{^$invest_item["card_usable_count"]^}次{^/if^}</td>
+          <td>{^if isset($admin_name_list[$invest_item["operator_id"]])^}{^$admin_name_list[$invest_item["operator_id"]]^}{^/if^}</td>
         </tr>
 {^/foreach^}
       </tbody>
@@ -89,10 +119,11 @@
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th>修改日期</th>
-          <th>修改内容</th>
+          <th>日期</th>
+          <th>内容</th>
           <th>修改前</th>
           <th>修改后</th>
+          <th>操作人</th>
         </tr>
       </thead>
       <tbody>
@@ -102,6 +133,7 @@
           <td>{^$change_type_list[$change_item["change_type"]]^}</td>
           <td>{^$change_item["change_from"]^}</td>
           <td>{^$change_item["change_to"]^}</td>
+          <td>{^if isset($admin_name_list[$change_item["operator_id"]])^}{^$admin_name_list[$change_item["operator_id"]]^}{^/if^}</td>
         </tr>
 {^/foreach^}
       </tbody>

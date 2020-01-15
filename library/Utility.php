@@ -359,14 +359,34 @@ class Utility
 
     public static function getDateWeek($date_str)
     {
-        $date_ts = strtotime($date_str);
-        $year = date("Y", $date_ts);
-        $month = date("n", $date_ts);
-        $week = date("W", $date_ts);
-        if ($week == "01" && $month == "12") {
-            $year++;
+        return date("oW", strtotime($date_str));
+        //$date_ts = strtotime($date_str);
+        //$year = date("Y", $date_ts);
+        //$month = date("n", $date_ts);
+        //$week = date("W", $date_ts);
+        //if ($week == "01" && $month == "12") {
+        //    $year++;
+        //}
+        //if ($week == "53" && $month == "1") {
+        //    $year--;
+        //}
+        //return $year . $week;
+    }
+
+    public static function getWeeklyList($param_year)
+    {
+        $days_max = 365;
+        if (date("L", strtotime($param_year . "-01-01 00:00:00")) == "1") {
+            $days_max = 366;
         }
-        return $year . $week;
+        $result = array();
+        for ($i = -6; $i <= $days_max + 7; $i++) {
+            $current_time = mktime(0, 0, 0, 1, $i, $param_year);
+            $column_key = date("oW", $current_time);
+            $column_value = date("Ymd", $current_time);
+            $result[$column_key][] = $column_value;
+        }
+        return $result;
     }
 
     public static function getContentTypeList()

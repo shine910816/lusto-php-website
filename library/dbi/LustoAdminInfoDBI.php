@@ -8,6 +8,27 @@
 class LustoAdminInfoDBI
 {
 
+    public static function selectAdminNameList()
+    {
+        $dbi = Database::getInstance();
+        $sql = "SELECT * FROM admin_info";
+        $result = $dbi->query($sql);
+        if ($dbi->isError($result)) {
+            $result->setPos(__FILE__, __LINE__);
+            return $result;
+        }
+        $data = array();
+        while ($row = $result->fetch_assoc()) {
+            if ($row["admin_note"]) {
+                $data[$row["admin_id"]] = $row["admin_note"];
+            } else {
+                $data[$row["admin_id"]] = $row["admin_name"];
+            }
+        }
+        $result->free();
+        return $data;
+    }
+
     public static function getAdminInfo($admin_id)
     {
         $dbi = Database::getInstance();

@@ -31,10 +31,10 @@ class LustoStatisticsDBI
         return $data;
     }
 
-    public static function selectSaleTimesByInterval($from_day, $to_day)
+    public static function selectSalesByInterval($from_day, $to_day)
     {
         $dbi = Database::getInstance();
-        $sql = "SELECT create_d, COUNT(*)" .
+        $sql = "SELECT create_d AS date, COUNT(*) AS times, SUM(card_predict_amount) AS predict" .
                " FROM custom_sale_history" .
                " WHERE del_flg = 0" .
                " AND create_d >= " . $from_day .
@@ -48,30 +48,7 @@ class LustoStatisticsDBI
         }
         $data = array();
         while ($row = $result->fetch_assoc()) {
-            $data[$row["create_d"]] = $row["COUNT(*)"];
-        }
-        $result->free();
-        return $data;
-    }
-
-    public static function selectPredictByInterval($from_day, $to_day)
-    {
-        $dbi = Database::getInstance();
-        $sql = "SELECT create_d, SUM(card_predict_amount)" .
-               " FROM custom_sale_history" .
-               " WHERE del_flg = 0" .
-               " AND create_d >= " . $from_day .
-               " AND create_d <= " . $to_day .
-               " GROUP BY create_d" .
-               " ORDER BY create_d ASC";
-        $result = $dbi->query($sql);
-        if ($dbi->isError($result)) {
-            $result->setPos(__FILE__, __LINE__);
-            return $result;
-        }
-        $data = array();
-        while ($row = $result->fetch_assoc()) {
-            $data[$row["create_d"]] = $row["SUM(card_predict_amount)"];
+            $data[$row["date"]] = $row;
         }
         $result->free();
         return $data;

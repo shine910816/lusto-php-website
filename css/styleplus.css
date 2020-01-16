@@ -89,3 +89,8 @@
 .no_disp {
   display:none!important;
 }
+.chart_box {
+  width:968px;
+  height:484px;
+  margin:30px 0 0;
+}

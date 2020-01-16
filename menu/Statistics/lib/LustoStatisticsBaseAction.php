@@ -89,5 +89,31 @@ class LustoStatisticsBaseAction extends ActionBase
         $request->setAttribute("next_param", $next_param);
         $request->setAttribute("weekly_day_list", $weekly_list["week"]);
     }
+
+    protected function _getChartData($date_list, $amount_list, $times_list, $predict_list)
+    {
+        $date_data_array = array();
+        $amount_data_array = array();
+        $times_data_array = array();
+        $predict_data_array = array();
+        foreach ($date_list as $data_key => $data_item) {
+            $date_data_array[] = $data_item;
+        }
+        foreach ($amount_list as $data_key => $data_item) {
+            $amount_data_array[] = (float) $data_item;
+        }
+        foreach ($times_list as $data_key => $data_item) {
+            $times_data_array[] = (int) $data_item;
+        }
+        foreach ($predict_list as $data_key => $data_item) {
+            $predict_data_array[] = (float) $data_item;
+        }
+        return array(
+            "date" => json_encode($date_data_array),
+            "amount" => json_encode($amount_data_array),
+            "times" => json_encode($times_data_array),
+            "predict" => json_encode($predict_data_array)
+        );
+    }
 }
 ?>

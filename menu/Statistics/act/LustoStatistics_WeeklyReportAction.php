@@ -55,38 +55,30 @@ class LustoStatistics_WeeklyReportAction extends LustoStatisticsBaseAction
             }
             $amount_list[$day_num] = $amount_value;
         }
-        $times_info = LustoStatisticsDBI::selectSaleTimesByInterval($weekly_day_arr[0], $weekly_day_arr[6]);
-        if ($controller->isError($times_info)) {
-            $times_info->setPos(__FILE__, __LINE__);
-            return $times_info;
+        $sales_info = LustoStatisticsDBI::selectSalesByInterval($weekly_day_arr[0], $weekly_day_arr[6]);
+        if ($controller->isError($sales_info)) {
+            $sales_info->setPos(__FILE__, __LINE__);
+            return $sales_info;
         }
         $times_list = array();
-        foreach ($date_list as $day_num => $day_tmp) {
-            $times_value = "0";
-            if (isset($times_info[$day_num])) {
-                $times_value = $times_info[$day_num];
-            }
-            $times_list[$day_num] = $times_value;
-        }
-        $predict_info = LustoStatisticsDBI::selectPredictByInterval($weekly_day_arr[0], $weekly_day_arr[6]);
-        if ($controller->isError($predict_info)) {
-            $predict_info->setPos(__FILE__, __LINE__);
-            return $predict_info;
-        }
         $predict_list = array();
         foreach ($date_list as $day_num => $day_tmp) {
+            $times_value = "0";
             $predict_value = "0";
-            if (isset($predict_info[$day_num])) {
-                $predict_value = $predict_info[$day_num];
+            if (isset($sales_info[$day_num])) {
+                $times_value = $sales_info[$day_num]["times"];
+                $predict_value = $sales_info[$day_num]["predict"];
             }
+            $times_list[$day_num] = $times_value;
             $predict_list[$day_num] = $predict_value;
         }
+        $chart_info = $this->_getChartData($date_list, $amount_list, $times_list, $predict_list);
         $request->setAttribute("current_param_context", $current_param_context);
         $request->setAttribute("date_list", $date_list);
         $request->setAttribute("amount_list", $amount_list);
         $request->setAttribute("times_list", $times_list);
         $request->setAttribute("predict_list", $predict_list);
-//Utility::testVariable($amount_list);
+        $request->setAttribute("chart_info", $chart_info);
         return VIEW_DONE;
     }
 }

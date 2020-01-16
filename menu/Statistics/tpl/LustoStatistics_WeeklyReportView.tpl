@@ -1,4 +1,9 @@
 {^include file=$comheader_file^}
+<script type="text/javascript">
+{^foreach from=$chart_info key=chart_key item=chart_item^}
+var {^$chart_key^}_data = {^$chart_item^};
+{^/foreach^}
+</script>
 <script type="text/javascript" src="js/echarts.min.js"></script>
 <div class="ui-corner-all custom-corners">
   <div class="ui-bar ui-bar-a ta_c">
@@ -10,6 +15,10 @@
       <div class="ui-block-b" style="width:70%!important;"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-b">{^$current_param_context^}</a></div>
       <div class="ui-block-c" style="width:15%!important;"><a href="./?menu={^$current_menu^}&act={^$current_act^}&date={^$next_param^}" class="ui-shadow ui-btn ui-corner-all ui-icon-carat-r ui-btn-icon-right" data-ajax="false">后一区间</a></div>
     </fieldset>
+    <div id="amount_chart" class="chart_box"></div>
+    <div id="times_chart" class="chart_box"></div>
+    <div id="predict_chart" class="chart_box"></div>
+    <script type="text/javascript" src="js/statistics/chart.js"></script>
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
@@ -32,30 +41,4 @@
     </table>
   </div>
 </div>
-<div id="main" style="width:1000px;height:400px;"></div>
-<script type="text/javascript">
-    // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById('main'));
-    // 指定图表的配置项和数据
-    var option = {
-        //title: {
-        //    text: 'ECharts 入门示例'
-        //},
-        //tooltip: {},
-        //legend: {
-        //    data:['销量']
-        //},
-        xAxis: {
-            data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-        },
-        yAxis: {},
-        series: [{
-            name: '销量',
-            type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
-        }]
-    };
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-</script>
 {^include file=$comfooter_file^}

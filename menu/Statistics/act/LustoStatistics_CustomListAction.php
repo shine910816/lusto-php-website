@@ -48,9 +48,26 @@ class LustoStatistics_CustomListAction extends ActionBase
             $custom_list->setPos(__FILE__, __LINE__);
             return $custom_list;
         }
-        
-Utility::testVariable($custom_list);
-        return VIEW_NONE;
+        $current_time = time();
+        foreach ($custom_list as $custom_id => $custom_item) {
+            $is_active = false;
+            if ($card_type_flg) {
+                $expire_time = strtotime($custom_item["value"]);
+                $expire_text = date("Y", $expire_time) . "年" . date("n", $expire_time) . "月" . date("j", $expire_time) . "日";
+                if ($current_time <= $expire_time) {
+                    $is_active = true;
+                }
+                $custom_list[$custom_id]["value"] = $expire_text;
+                $custom_list[$custom_id]["active"] = $is_active;
+            } else {
+                if ($custom_item["value"] > 0) {
+                    $is_active = true;
+                }
+                $custom_list[$custom_id]["active"] = $is_active;
+            }
+        }
+        $request->setAttribute("custom_list", $custom_list);
+        return VIEW_DONE;
     }
 }
 ?>

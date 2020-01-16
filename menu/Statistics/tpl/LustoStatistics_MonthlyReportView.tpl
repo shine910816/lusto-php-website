@@ -22,7 +22,7 @@ var {^$chart_key^}_data = {^$chart_item^};
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th style="width:25%!important;">日期</th>
+          <th style="width:25%!important;" class="first_th">日期</th>
           <th style="width:25%!important;">会员卡销售额</th>
           <th style="width:25%!important;">会员洗车次数</th>
           <th style="width:25%!important;">预估销售额</th>

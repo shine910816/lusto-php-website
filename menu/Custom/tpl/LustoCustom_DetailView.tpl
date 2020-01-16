@@ -61,7 +61,7 @@
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th>日期</th>
+          <th class="first_th">日期</th>
           <th>预估消费额</th>
           <th>操作人</th>
         </tr>
@@ -88,7 +88,7 @@
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th>日期</th>
+          <th class="first_th">日期</th>
           <th>类型</th>
           <th>金额</th>
           <th>{^if $custom_info["card_usable_infinity_flg"]^}有效期{^else^}次数{^/if^}</th>
@@ -119,7 +119,7 @@
     <table data-role="table" data-mode="columntoggle:none" class="ui-responsive disp_table">
       <thead>
         <tr>
-          <th>日期</th>
+          <th class="first_th">日期</th>
           <th>内容</th>
           <th>修改前</th>
           <th>修改后</th>

@@ -28,6 +28,7 @@ class Config
         $result["statistics"]["weekly_report"] = SYSTEM_AUTH_ADMIN;
         $result["statistics"]["monthly_report"] = SYSTEM_AUTH_ADMIN;
         $result["statistics"]["yearly_report"] = SYSTEM_AUTH_ADMIN;
+        $result["statistics"]["custom_list"] = SYSTEM_AUTH_ADMIN;
         $list_data["php"] = $result;
         $result = array();
         $list_data["api"] = $result;
@@ -53,6 +54,7 @@ class Config
         $result["statistics"]["weekly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "周度账目");
         $result["statistics"]["monthly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "月度账目");
         $result["statistics"]["yearly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "年度账目");
+        $result["statistics"]["custom_list"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "会员一览");
         return $result;
     }
 

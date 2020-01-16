@@ -24,11 +24,13 @@
 {^/foreach^}
       <tbody>
     </table>
-    <fieldset class="ui-grid-b">
+    <fieldset class="ui-grid-c">
       <div class="ui-block-a"><a href="./?menu={^$current_menu^}&act=weekly_report" class="ui-shadow ui-btn ui-corner-all" data-ajax="false">周度账目</a></div>
       <div class="ui-block-b"><a href="./?menu={^$current_menu^}&act=monthly_report" class="ui-shadow ui-btn ui-corner-all" data-ajax="false">月度账目</a></div>
       <div class="ui-block-c"><a href="./?menu={^$current_menu^}&act=yearly_report" class="ui-shadow ui-btn ui-corner-all" data-ajax="false">年度账目</a></div>
+      <div class="ui-block-d"><a href="./?menu={^$current_menu^}&act=custom_list" class="ui-shadow ui-btn ui-corner-all" data-ajax="false">会员一览</a></div>
     </fieldset>
   </div>
 </div>
+<a href="./" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">返回</a>
 {^include file=$comfooter_file^}

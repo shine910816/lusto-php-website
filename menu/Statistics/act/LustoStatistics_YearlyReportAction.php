@@ -68,7 +68,7 @@ class LustoStatistics_YearlyReportAction extends LustoStatisticsBaseAction
     {
         $current_param = $request->getAttribute("current_param");
         $date_list = $request->getAttribute("date_list");
-        $amount_info = LustoStatisticsDBI::selectAmountByYear($current_param);
+        $amount_info = LustoStatisticsDBI::selectAmount($current_param, true);
         if ($controller->isError($amount_info)) {
             $amount_info->setPos(__FILE__, __LINE__);
             return $amount_info;
@@ -81,7 +81,7 @@ class LustoStatistics_YearlyReportAction extends LustoStatisticsBaseAction
             }
             $amount_list[$day_num] = $amount_value;
         }
-        $sales_info = LustoStatisticsDBI::selectSalesByYear($current_param);
+        $sales_info = LustoStatisticsDBI::selectSales($current_param, true);
         if ($controller->isError($sales_info)) {
             $sales_info->setPos(__FILE__, __LINE__);
             return $sales_info;

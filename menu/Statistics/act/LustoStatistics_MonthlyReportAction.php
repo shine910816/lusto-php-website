@@ -39,7 +39,7 @@ class LustoStatistics_MonthlyReportAction extends LustoStatisticsBaseAction
             $date_text = date("j", $date_time) . "日";
             $date_list[$day_num] = $date_text;
         }
-        $amount_info = LustoStatisticsDBI::selectAmountByMonth($current_param);
+        $amount_info = LustoStatisticsDBI::selectAmount($current_param);
         if ($controller->isError($amount_info)) {
             $amount_info->setPos(__FILE__, __LINE__);
             return $amount_info;
@@ -52,7 +52,7 @@ class LustoStatistics_MonthlyReportAction extends LustoStatisticsBaseAction
             }
             $amount_list[$day_num] = $amount_value;
         }
-        $sales_info = LustoStatisticsDBI::selectSalesByMonth($current_param);
+        $sales_info = LustoStatisticsDBI::selectSales($current_param);
         if ($controller->isError($sales_info)) {
             $sales_info->setPos(__FILE__, __LINE__);
             return $sales_info;

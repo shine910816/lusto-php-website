@@ -35,7 +35,7 @@ var {^$chart_key^}_data = {^$chart_item^};
       <tbody>
 {^foreach from=$date_list key=date_key item=date_item^}
         <tr>
-          <td>{^$date_item|replace:" ":"<br/>"^}</td>
+          <td>{^$date_item^}</td>
           <td>{^$amount_list[$date_key]^}元</td>
           <td>{^$times_list[$date_key]^}次</td>
           <td>{^if $predict_list[$date_key] eq "0.00"^}0{^else^}{^$predict_list[$date_key]^}{^/if^}元</td>
@@ -45,4 +45,5 @@ var {^$chart_key^}_data = {^$chart_item^};
     </table>
   </div>
 </div>
+<a href="./?menu=statistics&act=daily_report" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">返回</a>
 {^include file=$comfooter_file^}

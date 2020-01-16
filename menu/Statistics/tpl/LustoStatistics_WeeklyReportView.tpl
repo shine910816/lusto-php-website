@@ -41,4 +41,5 @@ var {^$chart_key^}_data = {^$chart_item^};
     </table>
   </div>
 </div>
+<a href="./?menu=statistics&act=daily_report" class="ui-shadow ui-btn ui-corner-all ui-btn-a" data-ajax="false">返回</a>
 {^include file=$comfooter_file^}

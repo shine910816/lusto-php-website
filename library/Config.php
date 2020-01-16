@@ -50,9 +50,9 @@ class Config
         $result["custom"]["invest"] = array("续费充值");
         $result["custom"]["sale"] = array("洗车消费");
         $result["statistics"]["daily_report"] = array("账目管理");
-        $result["statistics"]["weekly_report"] = array('<a href="./?menu=custom&act=daily_report" data-ajax="false">账目管理</a>', "周度账目");
-        $result["statistics"]["monthly_report"] = array('<a href="./?menu=custom&act=daily_report" data-ajax="false">账目管理</a>', "月度账目");
-        $result["statistics"]["yearly_report"] = array('<a href="./?menu=custom&act=daily_report" data-ajax="false">账目管理</a>', "年度账目");
+        $result["statistics"]["weekly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "周度账目");
+        $result["statistics"]["monthly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "月度账目");
+        $result["statistics"]["yearly_report"] = array('<a href="./?menu=statistics&act=daily_report" data-ajax="false">账目管理</a>', "年度账目");
         return $result;
     }
 

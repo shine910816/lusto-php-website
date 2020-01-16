@@ -11,9 +11,9 @@ var {^$chart_key^}_data = {^$chart_item^};
   </div>
   <div class="ui-body ui-body-a">
     <fieldset class="ui-grid-b">
-      <div class="ui-block-a" style="width:15%!important;"><a href="./?menu={^$current_menu^}&act={^$current_act^}&date={^$prev_param^}" class="ui-shadow ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-left" data-ajax="false">前一区间</a></div>
+      <div class="ui-block-a" style="width:15%!important;"><a href="./?menu={^$current_menu^}&act={^$current_act^}&date={^$prev_param^}" class="ui-shadow ui-btn ui-corner-all ui-icon-carat-l ui-btn-icon-left" data-ajax="false">上一周</a></div>
       <div class="ui-block-b" style="width:70%!important;"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-btn-b">{^$current_param_context^}</a></div>
-      <div class="ui-block-c" style="width:15%!important;"><a href="./?menu={^$current_menu^}&act={^$current_act^}&date={^$next_param^}" class="ui-shadow ui-btn ui-corner-all ui-icon-carat-r ui-btn-icon-right" data-ajax="false">后一区间</a></div>
+      <div class="ui-block-c" style="width:15%!important;"><a href="./?menu={^$current_menu^}&act={^$current_act^}&date={^$next_param^}" class="ui-shadow ui-btn ui-corner-all ui-icon-carat-r ui-btn-icon-right" data-ajax="false">下一周</a></div>
     </fieldset>
     <div id="amount_chart" class="chart_box"></div>
     <div id="times_chart" class="chart_box"></div>

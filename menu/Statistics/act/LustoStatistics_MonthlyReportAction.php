@@ -2,13 +2,13 @@
 require_once SRC_PATH . "/menu/Statistics/lib/LustoStatisticsBaseAction.php";
 
 /**
- * 周度账目
+ * 月度账目
  * @author Kinsama
- * @version 2020-01-15
+ * @version 2020-01-16
  */
-class LustoStatistics_WeeklyReportAction extends LustoStatisticsBaseAction
+class LustoStatistics_MonthlyReportAction extends LustoStatisticsBaseAction
 {
-    protected $_stat_interval = "1";
+    protected $_stat_interval = "2";
 
     /**
      * 执行主程序
@@ -29,20 +29,17 @@ class LustoStatistics_WeeklyReportAction extends LustoStatisticsBaseAction
     private function _doDefaultExecute(Controller $controller, User $user, Request $request)
     {
         $current_param = $request->getAttribute("current_param");
-        $current_param_context = substr($current_param, 0, 4) . "年 第" . sprintf("%d", substr($current_param, 4, 2)) . "周 (";
-        $weekly_day_list = $request->getAttribute("weekly_day_list");
-        $weekly_day_arr = $weekly_day_list[$current_param];
-        $current_param_context .= sprintf("%d", substr($weekly_day_arr[0], 4, 2)) . "月";
-        $current_param_context .= sprintf("%d", substr($weekly_day_arr[0], 6, 2)) . "日~";
-        $current_param_context .= sprintf("%d", substr($weekly_day_arr[6], 4, 2)) . "月";
-        $current_param_context .= sprintf("%d", substr($weekly_day_arr[6], 6, 2)) . "日)";
+        $current_time = mktime(0, 0, 0, substr($current_param, 4, 2), 1, substr($current_param, 0, 4));
+        $current_param_context = date("Y", $current_time) . "年" . date("n", $current_time) . "月";
         $date_list = array();
-        foreach ($weekly_day_arr as $day_num) {
-            $date_time = mktime(0, 0, 0, substr($day_num, 4, 2), substr($day_num, 6, 2), substr($day_num, 0, 4));
-            $date_text = date("n", $date_time) . "月" . date("j", $date_time) . "日";
+        $current_month_max_day = date("t", $current_time);
+        for ($i = 1; $i <= $current_month_max_day; $i++) {
+            $date_time = mktime(0, 0, 0, date("n", $current_time), $i, date("Y", $current_time));
+            $day_num = date("Ymd", $date_time);
+            $date_text = date("j", $date_time) . "日";
             $date_list[$day_num] = $date_text;
         }
-        $amount_info = LustoStatisticsDBI::selectAmountByInterval($weekly_day_arr[0], $weekly_day_arr[6]);
+        $amount_info = LustoStatisticsDBI::selectAmountByMonth($current_param);
         if ($controller->isError($amount_info)) {
             $amount_info->setPos(__FILE__, __LINE__);
             return $amount_info;
@@ -55,7 +52,7 @@ class LustoStatistics_WeeklyReportAction extends LustoStatisticsBaseAction
             }
             $amount_list[$day_num] = $amount_value;
         }
-        $sales_info = LustoStatisticsDBI::selectSalesByInterval($weekly_day_arr[0], $weekly_day_arr[6]);
+        $sales_info = LustoStatisticsDBI::selectSalesByMonth($current_param);
         if ($controller->isError($sales_info)) {
             $sales_info->setPos(__FILE__, __LINE__);
             return $sales_info;
